@@ -1,11 +1,25 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, model, Output, ViewChild} from '@angular/core';
+import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatCalendar} from '@angular/material/datepicker';
 import {SelectionGroupController} from './SelectionGroupController';
+import {NgIf, NgStyle} from '@angular/common';
+import {CdkConnectedOverlay, CdkOverlayOrigin} from '@angular/cdk/overlay';
+import {NgSelectComponent} from '@ng-select/ng-select';
 
 @Component({
     selector: 'dah-date-time-picker',
-    standalone: false,
+    imports: [
+        NgxDaterangepickerMd,
+        MatCalendar,
+        NgStyle,
+        NgIf,
+        CdkOverlayOrigin,
+        CdkConnectedOverlay,
+        NgSelectComponent,
+    ],
+    standalone: true,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -132,6 +146,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         }
 
         this.dateInputRef.nativeElement.value = this.selectionGroupController.getValue();
+        this.selectionGroupController.invalidateSelection();
     }
 
     public onClick(): void {

@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'Lato';
+  src: url('/public/fonts/lato_regular.eot'); /* IE 9 Compatibility Mode */
+  src: url('/public/fonts/lato_regular.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+  url('/public/fonts/lato_regular.woff2') format('woff2'), /* Super Modern Browsers */
+  url('/public/fonts/lato_regular.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+  url('/public/fonts/lato_regular.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('/public/fonts/lato_regular.svg#lato_regular') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Lato Bold';
+  src: url('/public/fonts/lato_bold.eot'); /* IE 9 Compatibility Mode */
+  src: url('/public/fonts/lato_bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+  url('/public/fonts/lato_bold.woff2') format('woff2'), /* Super Modern Browsers */
+  url('/public/fonts/lato_bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+  url('/public/fonts/lato_bold.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('/public/fonts/lato_bold.svg#lato_bold') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Lato Semibold';
+  src: local('Lato Semibold'), local('Lato-Semibold'),
+  url('/public/fonts/latosemibold.woff2') format('woff2'),
+  url('/public/fonts/latosemibold.woff') format('woff'),
+  url('/public/fonts/latosemibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Lato-Bold-numbers';
+  src: url('/public/fonts/lato_bold.eot'); /* IE 9 Compatibility Mode */
+  src: url('/public/fonts/lato_bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+  url('/public/fonts/lato_bold.woff2') format('woff2'), /* Super Modern Browsers */
+  url('/public/fonts/lato_bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+  url('/public/fonts/lato_bold.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('/public/fonts/lato_bold.svg#lato_bold') format('svg'); /* Chrome < 4, Legacy iOS */
+  unicode-range: U+30-39;
+}

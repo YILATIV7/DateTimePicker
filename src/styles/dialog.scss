@@ -1,0 +1,1063 @@
+@import "variables";
+
+
+.mat-mdc-dialog-container.mat-mdc-dialog-container {
+  background-color: $white;
+  color: $text;
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  border-radius: 10px;
+
+  .mdc-dialog__container.mdc-dialog__container,
+  .mat-mdc-dialog-surface.mat-mdc-dialog-surface,
+  .mdc-dialog__surface.mdc-dialog__surface {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    box-shadow: unset;
+    border-radius: unset;
+    background: transparent;
+
+    transition: unset;
+  }
+
+  .mdc-dialog__surface::before {
+    content: unset;
+  }
+}
+
+/**
+      Default dialog for simple items
+*/
+
+.dialog {
+  max-height: 100vh;
+
+  dah-event-settings {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .mat-mdc-dialog-container {
+    border-radius: 10px;
+    box-shadow: 0 2px 20px #2222162E;
+    margin: 10px;
+  }
+
+  &__header {
+    display: flex;
+    min-height: 45px;
+    border-bottom: 1px dashed $border;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 10px;
+    gap: 10px;
+
+    &--noBorder {
+      border-bottom: none;
+    }
+
+    .titleText {
+      padding: 10px 20px;
+      font-size: 14px;
+      line-height: 1.3;
+      font-family: "Lato Bold", sans-serif;
+      flex-grow: 1;
+      text-align: center;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: break-word;
+
+      &.can-minimized {
+        padding-right: 50px;
+      }
+
+      &.fz16 {
+        font-size: 16px;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 10px;
+      right: 0;
+    }
+
+    > .btn-mini-action {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      display: block;
+    }
+  }
+
+  &__headerBig {
+    border-bottom: 1px solid $border;
+    min-height: 68px;
+    box-sizing: border-box;
+    padding: 15px 0;
+    margin-left: 30px;
+    margin-right: 30px;
+
+    .titleText {
+      font-size: 20px;
+      line-height: 1.2;
+      color: $text;
+      font-weight: 400;
+      word-break: break-word;
+    }
+  }
+
+  &__headerMiddle {
+    display: flex;
+    border-bottom: 1px dashed $border;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 10px;
+
+    .titleText {
+      padding: 10px 10px;
+      font-size: 18px;
+      font-family: "Lato Semibold", sans-serif;
+      flex-grow: 1;
+      box-sizing: border-box;
+    }
+
+    .buttons,
+    > .btn-mini-action {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      display: block;
+    }
+
+  }
+
+  .dialog__section {
+    border-radius: 10px;
+    background-color: $white;
+    box-shadow: 0 3px 15px #0000000B;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid $border;
+    padding: 15px 20px;
+  }
+
+  .dialog__body {
+    display: flex;
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+
+    iframe {
+      display: block;
+    }
+
+    .dialogInform,
+    .dialogForm {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+      padding: 0 10px;
+      position: relative;
+
+      &--background {
+        background-color: $background;
+        padding: 0 20px;
+      }
+    }
+
+    .dialogInformContent,
+    .dialogFormContent {
+      display: flex;
+      flex: 1 1 auto;
+      overflow: auto;
+      padding: 15px 10px 15px 10px;
+      position: relative;
+    }
+
+    .dialogInform__text {
+      font-family: "Lato Bold", sans-serif;
+      text-align: center;
+      flex: 1 0 auto;
+    }
+
+    .formButtons,
+    .dialogButtons {
+      display: flex;
+      flex: 0 0 auto;
+      border-top: 1px dashed $border;
+
+      &.no-border {
+        border: unset;
+      }
+    }
+
+    .formButtons {
+      padding: 15px 10px 20px 10px;
+
+      button {
+        height: 35px;
+        font-size: 14px;
+      }
+    }
+
+    .dialogButtons {
+      padding: 15px 20px 20px 20px;
+      margin: 0 10px;
+    }
+
+    .buildingChooserWrapper {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      padding: 15px 30px;
+    }
+  }
+
+  app-apartment-balances-dialog {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+
+.dialog-no-margin {
+
+  .mat-mdc-dialog-container {
+    box-shadow: unset;
+    margin: 0;
+  }
+}
+
+.dialog-roles .mat-mdc-dialog-container {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1226px;
+}
+
+.dialog-roles-view .mat-mdc-dialog-container {
+  margin: 10px auto;
+  width: 100%;
+  max-width: 1226px;
+}
+
+/**
+    dialogImageViewer
+ */
+.dialogImageViewer {
+
+  .mat-mdc-dialog-container {
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__close {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    color: $white;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.5;
+    z-index: 4;
+
+    i {
+      font-size: 40px;
+
+      &:before {
+        color: $white;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+      opacity: 1;
+    }
+  }
+
+  dah-image-viewer-flat {
+    z-index: 1;
+  }
+
+}
+
+/**
+      eventDialog
+ */
+.eventDialog {
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 50px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    font-family: 'Lato Bold', sans-serif;
+
+  }
+
+  &__container {
+    padding: 0 10px 15px;
+
+    &--border {
+      border-top: 1px solid $border;
+      padding-top: 17px;
+      padding-bottom: 15px;
+    }
+  }
+
+  &__content {
+    padding: 0 10px;
+  }
+
+  &__footer {
+    padding: 15px 0;
+    margin: 0 20px;
+    border-top: 1px solid $border;
+  }
+}
+
+/**
+    dialog--addCommon
+ */
+.dialog--addCommon {
+
+  dah-apartment-common {
+
+    .apartmentDialog__section {
+      padding: 0;
+      border-top: unset;
+      box-shadow: unset;
+      border-radius: unset;
+      border: unset;
+
+      form {
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+        .apartmentForm {
+          padding: 15px 10px 20px;
+        }
+      }
+    }
+  }
+}
+
+/**
+      Apartment dialog
+*/
+.apartmentDialog {
+
+  &__wrapper {
+    padding-bottom: 30px;
+    padding-top: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__content {
+    padding: 0 20px 1px 30px;
+    flex-grow: 1;
+    overflow: auto;
+    margin-right: 10px;
+    gap: 15px 30px;
+  }
+
+  .apartmentForm {
+    padding-bottom: 20px;
+  }
+
+  .dialog__body {
+    padding-top: 11px;
+
+    .dialogForm {
+      padding: 0;
+      overflow: visible;
+    }
+
+    .formButtons {
+      padding: 0;
+      border-top: none;
+    }
+  }
+}
+
+/**
+    dialog__tabNav
+ */
+.dialog__tabNav {
+
+  &:not(.no-border) {
+    border-bottom: 1px solid $border;
+  }
+
+  &Item {
+    padding: 10px 40px;
+    line-height: 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: $text-light;
+    border-left: 1px solid $border;
+    border-top: 1px solid $border;
+    border-right: 1px solid $border;
+    margin-left: -1px;
+    cursor: pointer;
+
+    i:before {
+      color: inherit;
+    }
+
+    &--active {
+      color: $primary;
+      background-color: $primary-lighten;
+    }
+
+    &--disabled {
+      color: $disabled;
+      cursor: default;
+    }
+  }
+}
+
+/**
+    dialogDelete
+ */
+.dialogDelete {
+
+  &__title {
+    text-align: center;
+    position: relative;
+    font-size: 16px;
+    font-family: "Lato Bold", sans-serif;
+    padding: 10px 30px;
+
+    button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+
+  &__body {
+    flex-grow: 1;
+
+    .formButtons {
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      button {
+        min-width: 100px;
+      }
+    }
+  }
+
+  &__content {
+    padding: 30px;
+    background-color: $button;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+  }
+
+  &__text {
+    font-size: 15px;
+    line-height: 22px;
+    word-break: break-word;
+  }
+}
+
+app-confirmation-dialog {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/**
+    dialogDocuments
+ */
+
+.doc-tabs-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .doc-tab-item {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0;
+
+    &.active-tab {
+      z-index: 1;
+      opacity: 1;
+    }
+  }
+}
+
+.dialogDocuments {
+
+  .mat-mdc-dialog-container {
+    border-radius: 0;
+    box-shadow: unset;
+    background-color: transparent;
+  }
+
+  &__wrapper {
+    box-shadow: 0 3px 15px #0000000B;
+    background-color: $white;
+    border-radius: 10px;
+    overflow: hidden;
+
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    padding: 15px;
+    gap: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    @media screen and (max-width: $tableSmall) {
+      gap: 5px 20px;
+    }
+
+    &Pager {
+      border: 1px solid $border;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 22px;
+
+      button {
+        height: 22px;
+        width: 33px;
+        background-color: transparent;
+        color: $text-light;
+        border: none;
+
+        &:hover {
+          color: $text;
+        }
+
+        &[disabled] {
+          color: $disabled;
+        }
+
+        &:not(:first-child) {
+          border-left: 1px solid $border;
+        }
+
+        i:before {
+          color: inherit;
+        }
+      }
+    }
+
+    .titleText {
+      font-size: 18px;
+    }
+
+    dah-document-name {
+
+      @media screen and (max-width: $tableSmall) {
+        order: 2;
+        flex: 1 0 100%;
+      }
+    }
+
+    &Buttons {
+      margin-left: auto;
+      gap: 10px;
+      display: flex;
+    }
+  }
+
+  .accountingChecker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 24px;
+    background-color: $background;
+    border-radius: 6px;
+  }
+
+  &__actions {
+    background-color: $background;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    &.tab-page {
+      padding: 15px 20px;
+      background-color: transparent;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+      justify-content: space-between;
+    }
+
+  }
+
+  &__body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+
+    &.opened-history {
+      padding-right: 0;
+
+      .tableFooter {
+        padding-right: 20px;
+      }
+    }
+
+    &.no-padding-top {
+      padding-top: 0;
+    }
+
+    &.no-padding {
+      padding: 0;
+    }
+  }
+
+  &__tabNav {
+    border-bottom: 1px solid $border;
+    display: flex;
+    flex-wrap: wrap;
+
+    &Item:first-child {
+      border-left: 1px solid $border;
+    }
+
+    &Item {
+      line-height: 18px;
+      padding: 8px 20px;
+      border-radius: 8px 8px 0 0;
+      background-color: $background;
+      border-top: 1px solid $border;
+      border-right: 1px solid $border;
+      position: relative;
+      cursor: pointer;
+      font-family: "Lato Bold", sans-serif;
+
+      .itemsCount {
+        border-radius: 6px;
+        border: 1px solid $text-light;
+        margin-left: 8px;
+        height: 16px;
+        text-align: center;
+        padding: 0 5px;
+        font-size: 11px;
+        color: $text-light;
+        line-height: 16px;
+      }
+
+      &--active {
+        background-color: $white;
+        z-index: 2;
+        color: $primary;
+
+        &:after {
+          content: '';
+          background-color: $white;
+          position: absolute;
+          right: 0;
+          left: 0;
+          bottom: -1px;
+          height: 1px;
+        }
+
+        &:last-child .r,
+        &:first-child .l {
+          display: none;
+        }
+
+        span {
+
+          &.l {
+            left: -8px;
+
+            &:after {
+              right: 0;
+              border-right: 1px solid $border;
+            }
+          }
+
+          &.r {
+            right: -8px;
+
+            &:after {
+              left: 0;
+              border-left: 1px solid $border;
+            }
+          }
+
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          bottom: -1px;
+          background-color: $white;
+          overflow: hidden;
+
+          &:after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-bottom: 1px solid $border;
+            border-radius: 50%;
+            box-sizing: border-box;
+            background: $background;
+            bottom: 0;
+          }
+        }
+
+        .itemsCount {
+          color: $primary;
+          border-color: $primary;
+        }
+      }
+    }
+  }
+
+  &__tabItemWrapper {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__tabItem {
+    border-left: 1px solid $border;
+    border-bottom: 1px solid $border;
+    border-right: 1px solid $border;
+    border-radius: 0 0 10px 10px;
+    flex-direction: column;
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+
+    &--small {
+      flex-grow: 0;
+    }
+
+    &--noTabNav {
+      border-top: 1px solid $border;
+      border-radius: 10px;
+    }
+
+    &.no-border {
+      border: none;
+    }
+
+    &.no-border-radius {
+      border-radius: 0;
+    }
+
+    .table {
+      display: flex;
+      width: 100%;
+      flex-grow: 1;
+      overflow: auto;
+
+      &:not(.no-border) {
+        border-top: 1px solid $border;
+      }
+    }
+  }
+
+  &__tabButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 10px 12px 20px;
+  }
+
+  .tableFooter {
+
+    &__value {
+      background-color: $primary-lighten;
+      border-radius: 8px;
+      padding: 5px 12px;
+      gap: 15px 0;
+      display: flex;
+
+      &.diff {
+        padding: 11px 20px;
+      }
+
+      &.full-widthValue {
+        width: 100%;
+        padding: 13px 30px;
+      }
+
+      &Item {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        line-height: 20px;
+
+        &.no-gap {
+          gap: 0;
+        }
+
+        &:not(:last-child) {
+          border-right: 1px solid $border;
+          margin-right: 12px;
+          padding-right: 12px;
+        }
+      }
+
+      .text-label {
+        font-size: 11px;
+
+        sup {
+          font-size: 8px;
+          vertical-align: baseline;
+          position: relative;
+          top: -4px;
+        }
+      }
+    }
+  }
+}
+
+dah-document-name {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/**
+    dialogExplorer
+ */
+.dialogExplorer {
+
+  dah-tenants,
+  dah-accrual-template,
+  dah-territory-classifier,
+  dah-tax-organization,
+  dah-wage-document,
+  dah-calendar-schedule,
+  dah-government,
+  dah-calendar,
+  dah-organization-document,
+  dah-documents,
+  dah-nomenclature-cross-document,
+  dah-nomenclature-storage,
+  dah-staff-employee,
+  dah-money-accounts-cash,
+  dah-money-accounts-bank,
+  dah-bank,
+  dah-company,
+  dah-accounting,
+  dah-nomenclature,
+  dah-classifier-calculation,
+  dah-apartments,
+  dah-staff-person,
+  dah-staff-position,
+  dah-account,
+  dah-units,
+  dah-money-transaction-bank,
+  dah-ac-documents,
+  dah-flow-item,
+  dah-asset {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .dahPages {
+
+    &Wrapper {
+      margin: 0;
+      box-shadow: unset;
+    }
+  }
+
+  &__buttons {
+    display: inline-flex;
+    gap: 10px;
+
+    position: relative;
+    top: -5px;
+    margin-bottom: auto;
+    margin-right: -10px;
+  }
+
+  &__filterInform {
+    padding-top: 5px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $border;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    gap: 5px;
+    align-items: flex-start;
+
+    > div {
+      margin-top: 1px;
+    }
+
+    .icon-attention {
+      min-width: 20px;
+
+      &:before {
+        color: $primary;
+      }
+    }
+  }
+}
+
+
+.matMenuRangeDatePicker.matMenuRangeDatePicker.matMenuRangeDatePicker {
+  min-width: auto;
+  min-height: auto;
+  background-color: $white;
+  width: max-content;
+  max-width: unset;
+  box-shadow: 0 2px 20px #2222162E;
+  border-radius: 2px;
+  overflow: hidden;
+
+  .mat-menu-content:not(:empty) {
+    padding: 0;
+  }
+}
+
+/**
+  dialogSmallHeader
+ */
+
+.dialogSmallHeader {
+  min-height: 32px;
+  background-color: $background;
+  padding-right: 10px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-family: 'Lato Semibold', sans-serif;
+
+  span {
+    margin: auto;
+  }
+}
+
+.batch-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .mat-mdc-dialog-container {
+    margin: 0;
+    max-width: 465px;
+    width: 465px;
+  }
+}
+
+.dialog-document-align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .mat-mdc-dialog-container {
+    margin: 0;
+    max-width: 1170px;
+    width: 100%;
+    height: 100%;
+    max-height: 600px;
+  }
+}
+
+.batch-dialog-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-mdc-dialog-container {
+    margin: 0;
+    max-width: 425px;
+  }
+}
+
+.next-document {
+  padding: 15px;
+  border: 1px solid #D99153;
+  background-color: #E58E440F;
+  font-size: 13px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.field-group {
+  padding: 15px 20px 20px;
+  border-radius: 10px;
+  background-color: $background;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

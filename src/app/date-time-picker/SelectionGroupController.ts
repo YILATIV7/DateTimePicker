@@ -19,26 +19,30 @@ export class SelectionGroupController {
 
     /* Setting group */
     public setGroupForCursor(cursorIndex: number): void {
-        if (cursorIndex < 3) this.setGroup(0); // select day
-        else if (cursorIndex < 6) this.setGroup(1); // select month
-        else if (cursorIndex < 11) this.setGroup(2); // select year
-        else if (cursorIndex < 14) this.setGroup(3); // select hours
-        else this.setGroup(4); // select minutes
+        if (cursorIndex < 3) this.setSelection(0); // select day
+        else if (cursorIndex < 6) this.setSelection(1); // select month
+        else if (cursorIndex < 11) this.setSelection(2); // select year
+        else if (cursorIndex < 14) this.setSelection(3); // select hours
+        else this.setSelection(4); // select minutes
     }
 
     public setPrevGroup(): void {
-        this.setGroup(this.groupNumber <= 0 ? this.groupNumber : this.groupNumber - 1);
+        this.setSelection(this.groupNumber <= 0 ? this.groupNumber : this.groupNumber - 1);
     }
 
     public setNextGroup(): void {
-        this.setGroup(this.groupNumber >= 4 ? this.groupNumber : this.groupNumber + 1);
+        this.setSelection(this.groupNumber >= 4 ? this.groupNumber : this.groupNumber + 1);
     }
 
     public setFirstGroup(): void {
-        this.setGroup(0);
+        this.setSelection(0);
     }
 
-    private setGroup(i: number): void {
+    public invalidateSelection(): void {
+        this.setSelection(this.groupNumber);
+    }
+
+    private setSelection(i: number): void {
         this.dateInputRef.nativeElement.setSelectionRange(groups[i].start, groups[i].end, "forward");
         this.groupNumber = i;
     }
@@ -65,7 +69,7 @@ export class SelectionGroupController {
     }
 
     public insertDigit(digit: string) {
-        this.setGroup(this.groupNumber);
+        this.setSelection(this.groupNumber);
 
         console.log(`InsertDigit: digit ${digit}, groupNumber: ${this.groupNumber}`);
 
@@ -76,7 +80,7 @@ export class SelectionGroupController {
             this.groupValues.day = this.groupValues.day * 10 + parseInt(digit);
 
             if (this.groupValues.day.toString().length === 2) {
-                this.setGroup(this.groupNumber + 1);
+                this.setSelection(this.groupNumber + 1);
             }
         }
 
@@ -87,7 +91,7 @@ export class SelectionGroupController {
             this.groupValues.month = this.groupValues.month * 10 + parseInt(digit);
 
             if (this.groupValues.month.toString().length === 2) {
-                this.setGroup(this.groupNumber + 1);
+                this.setSelection(this.groupNumber + 1);
             }
         }
 
@@ -97,8 +101,8 @@ export class SelectionGroupController {
             }
             this.groupValues.year = this.groupValues.year * 10 + parseInt(digit);
 
-            if (this.groupValues.year.toString().length === 2) {
-                this.setGroup(this.groupNumber + 1);
+            if (this.groupValues.year.toString().length === 4) {
+                this.setSelection(this.groupNumber + 1);
             }
         }
     }

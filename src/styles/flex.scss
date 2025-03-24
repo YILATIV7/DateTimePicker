@@ -1,0 +1,118 @@
+.df {
+  display: flex;
+  flex-direction: row;
+}
+
+.df-c {
+  display: flex;
+  flex-direction: column;
+}
+
+.df-rr {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.fw-w {
+  flex-wrap: wrap;
+}
+
+.jc-s {
+  justify-content: flex-start;
+}
+
+.jc-sb {
+  justify-content: space-between;
+}
+
+.jc-c {
+  justify-content: center;
+}
+
+.jc-e {
+  justify-content: flex-end;
+}
+
+.ai-s {
+  align-items: flex-start;
+}
+
+.ai-c {
+  align-items: center;
+}
+
+.ai-e {
+  align-items: flex-end;
+}
+
+.ai-b {
+  align-items: baseline;
+}
+
+.gap {
+  gap: var(--gap);
+}
+
+.gap5 {
+  gap: 5px;
+}
+
+.gap5-10 {
+  gap: 5px 10px;
+}
+
+.gap10 {
+  gap: 10px;
+}
+
+.gap10-15 {
+  gap: 10px 15px;
+}
+
+.gap10-20 {
+  gap: 10px 20px;
+}
+
+.gap10-30 {
+  gap: 10px 30px;
+}
+
+.gap15 {
+  gap: 15px;
+}
+
+.gap15-10 {
+  gap: 15px 10px;
+}
+
+.gap15-20 {
+  gap: 15px 20px;
+}
+
+.gap15-30 {
+  gap: 15px 30px;
+}
+
+.gap15-40 {
+  gap: 15px 40px;
+}
+
+.gap15-50 {
+  gap: 15px 50px;
+}
+
+.gap20 {
+  gap: 20px;
+}
+
+.gap25 {
+  gap: 25px;
+}
+
+.gap30 {
+  gap: 30px;
+}

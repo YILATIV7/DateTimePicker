@@ -12,8 +12,7 @@ import {NgSelectComponent} from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DateTimePickerComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +24,7 @@ import {NgSelectComponent} from '@ng-select/ng-select';
     CdkConnectedOverlay,
     NgSelectComponent,
     NgIf,
+    DateTimePickerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

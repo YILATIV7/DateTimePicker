@@ -1,0 +1,2101 @@
+@import "variables";
+
+.fieldControls {
+  position: relative;
+}
+
+input {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-text-fill-color: unset;
+  caret-color: $text;
+}
+
+textarea::placeholder,
+input::placeholder,
+.ng-placeholder {
+  color: $text-light;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px #fff inset !important;
+  font: inherit !important;
+}
+
+@-webkit-keyframes autofill {
+  to {
+    color: #666;
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
+
+.textareaWrapper {
+  display: flex;
+  padding: 4px 12px 4px 12px;
+  background: $white;
+  border-radius: 8px;
+  flex-grow: 1;
+  font-size: 14px;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  &--order {
+    padding: 9px 12px;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  &--message {
+    padding: 0 0 3px;
+    border-radius: 0;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+  }
+
+  textarea {
+    font-family: 'Lato', sans-serif;
+    line-height: 20px;
+    font-size: 15px;
+    letter-spacing: normal;
+    outline: none;
+    border: none;
+    width: 100%;
+    min-width: 200px;
+    background-color: transparent;
+    padding: 0;
+    resize: none;
+    caret-color: $text;
+  }
+}
+
+.formItems__subLabel {
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.formItems__smallLabel {
+  font-size: 12px;
+}
+
+.errorText {
+  color: $alternate-red;
+}
+
+.field--archivedItem {
+  width: auto;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 22px;
+  left: 20px;
+}
+
+.field--apartmentType {
+  width: 190px;
+}
+
+.radioLabels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &.vertical {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &--big {
+
+    label {
+      min-height: 34px;
+    }
+  }
+
+  .group-title {
+    width: 100%;
+    font-size: 12px;
+    line-height: 15px;
+    color: $text-light;
+  }
+
+  label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    &.gap15 {
+      gap: 15px;
+    }
+
+    &.disabled,
+    &:has(input[disabled]) {
+      cursor: default;
+    }
+
+    input {
+      position: absolute;
+      clip: rect(0 0 0 0);
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      overflow: hidden;
+
+      & + span {
+        width: 16px;
+        height: 16px;
+        flex: 0 0 16px;
+        margin-left: 1px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px $border;
+        background-color: $white;
+
+        & + span {
+          color: $text-light;
+        }
+      }
+
+      &:checked {
+
+        + span {
+          border: 2px solid $white;
+
+          &:not(.alternate-purple):not(.alternate-red) {
+            box-shadow: 0 0 0 1px $primary;
+            background-color: $primary;
+          }
+
+          &.alternate-purple {
+            box-shadow: 0 0 0 1px $alternate-purple;
+            background-color: $alternate-purple;
+          }
+
+          &.alternate-red {
+            box-shadow: 0 0 0 1px $alternate-red;
+            background-color: $alternate-red;
+          }
+
+          & + span {
+            color: $text;
+          }
+        }
+      }
+
+      &:disabled + span {
+        opacity: 0.5;
+      }
+    }
+
+    &.alternate-red {
+
+      input:checked + span {
+        box-shadow: 0 0 0 1px $alternate-red;
+        background-color: $alternate-red;
+      }
+    }
+  }
+}
+
+label.checkboxItem {
+  cursor: pointer;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  font-size: 14px;
+  line-height: 18px;
+  color: $text-light;
+
+  &.checked-item,
+  &:has(input:checked) {
+    color: $text;
+  }
+
+  &.disabled-item,
+  &:has(input[disabled]) {
+    color: $disabled;
+    cursor: default;
+  }
+
+  &--mt20 {
+    margin-top: 20px;
+    margin-bottom: auto;
+  }
+
+  &.checkAll {
+    margin-top: 2px;
+    margin-bottom: 2px;
+
+    label {
+      padding: 4px;
+      background-color: $background;
+      border-radius: 6px;
+    }
+  }
+
+  &--big {
+    height: 34px;
+    align-items: center;
+  }
+
+  &--middle {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  &--small {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    gap: 10px;
+  }
+
+  &--reports {
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  input {
+    display: none;
+  }
+
+  &:not(.disabled-item) .check-mark,
+  input:not([disabled]) + span {
+    cursor: pointer;
+  }
+
+  .check-mark,
+  input + span {
+    user-select: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    flex: 0 0 18px;
+    box-sizing: border-box;
+    border: 1px solid $border;
+    border-radius: 4px;
+    background-color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      opacity: 0;
+      font-size: 16px;
+      color: $white;
+    }
+  }
+
+  &.checked-item .check-mark,
+  input:checked + span {
+    background-color: $primary;
+    border-color: $primary;
+
+    i {
+      opacity: 1;
+    }
+  }
+
+  input.partially-checked + span {
+    background-color: $primary;
+    border-color: $primary;
+    position: relative;
+
+    &:after {
+      content: '—';
+      font-size: 16px;
+      line-height: 14px;
+      text-align: center;
+      display: block;
+      color: $white;
+      position: absolute;
+      left: 2px;
+      top: 0;
+    }
+
+    i {
+      display: none;
+    }
+  }
+
+  &.disabled-item .check-mark,
+  input[disabled] + span {
+    background-color: $disabled;
+    border-color: $disabled;
+  }
+
+  input[disabled] + span + span {
+    color: $disabled;
+  }
+}
+
+/**
+    .ng-dropdown-panel
+*/
+
+.fieldControls ng-dropdown-panel {
+  width: 100% !important;
+}
+
+.ng-dropdown-panel.ng-dropdown-panel {
+  background-color: $white;
+  padding: 3px;
+  box-shadow: 0 1px 4px #6B6B6B29;
+  border-radius: 4px;
+  color: $text;
+
+  .ng-dropdown-panel-items .ng-option {
+    white-space: normal;
+  }
+
+  .ng-option {
+    padding: 7px 12px;
+    line-height: 20px;
+    background-color: transparent;
+    border-radius: 4px;
+    min-height: 34px;
+
+    &:not(:first-child) {
+      margin-top: 2px;
+    }
+
+    .ng-option-label {
+      display: flex;
+      //flex-wrap: wrap;
+      word-break: break-word;
+
+      img {
+        max-width: 20px;
+        height: auto;
+        margin-right: 10px;
+      }
+    }
+
+    &.ng-option-marked {
+      background-color: $row-focused;
+    }
+
+    &:has(.ng-tag-label) {
+
+    }
+
+    &.ng-option-selected {
+      background-color: $element-focused;
+    }
+
+    &.ng-option-disabled {
+      background-color: $background;
+      margin-right: 0;
+      cursor: default;
+
+      button {
+        color: $primary;
+        padding: 0;
+        margin: 0 0 0 7px;
+        background-color: transparent;
+        text-decoration: none;
+        border: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .ng-tag-label {
+      margin-right: 3px;
+    }
+  }
+
+  &.category-input {
+    min-width: 300px !important;
+
+    .ng-option {
+      padding: 10px 15px;
+      position: relative;
+      margin-top: 0;
+
+      &:not(:first-child):after {
+        content: '';
+        top: 0;
+        left: 4px;
+        right: 4px;
+        height: 1px;
+        position: absolute;
+        background-color: $border;
+      }
+    }
+  }
+
+  &.ng-select-multiple {
+
+    .ng-option {
+
+      &:not(.ng-option-disabled) {
+
+        .checkbox {
+          width: 18px;
+          height: 18px;
+          min-width: 18px;
+          box-sizing: border-box;
+          border: 1px solid #E1E6E1;
+          border-radius: 4px;
+          background-color: #fff;
+          margin-right: 10px;
+          position: relative;
+
+          &:after {
+            font-size: 16px;
+            color: #fff;
+            content: "\e902";
+
+            font-family: icomoon !important;
+            speak: never;
+            font-style: normal;
+            font-weight: 400;
+            font-feature-settings: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -8px;
+            margin-left: -8px;
+          }
+
+        }
+
+        &.ng-option-selected {
+
+          .checkbox {
+            border-color: $primary;
+            background-color: $primary;
+          }
+        }
+      }
+    }
+  }
+
+  .ng-option__smallText {
+    font-size: 12px;
+    color: $text-light;
+    line-height: 16px;
+    width: 100%;
+    display: block;
+  }
+}
+
+.category-option {
+  gap: 7px;
+
+  .parents {
+    font-size: 12px;
+    gap: 8px 10px;
+    padding-left: 30px;
+
+    .parent {
+
+      > * {
+        display: inline;
+        vertical-align: middle;
+      }
+
+      .sep {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.field--email + .lineButtonWrapper,
+.field--phone + .lineButtonWrapper {
+  margin-top: -8px;
+}
+
+.field.field--phone {
+  flex-wrap: wrap;
+  align-items: flex-end;
+  flex-direction: row;
+  gap: 0 10px;
+
+  dah-phone-input {
+    flex-basis: 250px;
+  }
+
+  .phone-action {
+    margin-left: auto;
+  }
+
+}
+
+.checkboxLabel {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  line-height: 13px;
+  user-select: none;
+
+  > span:first-child {
+    color: $text-light;
+  }
+
+  input {
+    display: none;
+  }
+
+  > input:not([disabled]) + span {
+    cursor: pointer;
+  }
+
+  > input + span {
+    width: 34px;
+    min-width: 34px;
+    border-radius: 10px;
+    height: 20px;
+    background-color: $button;
+    border: 1px solid $border;
+    box-sizing: border-box;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: $border;
+    }
+  }
+
+  > input:checked {
+
+    + span {
+      border-color: $primary;
+      background-color: $primary;
+
+      &:after {
+        left: calc(100% - 17px);
+        background-color: $white;
+      }
+    }
+
+    &[disabled] {
+
+      + span {
+        border-color: $primary-light;
+        background-color: $primary-light;
+      }
+    }
+  }
+}
+
+.field.field--email {
+  align-items: flex-end;
+  gap: 0 10px;
+  flex-direction: row;
+
+  dah-input {
+    flex: 1 1 auto;
+  }
+}
+
+/**
+      inputFile
+ */
+.inputFileLoadedData {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__item {
+    padding: 5px 15px 5px 5px;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: $button;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $border;
+      border-radius: 6px;
+      overflow: hidden;
+
+      i {
+        font-size: 22px;
+      }
+
+      img {
+
+      }
+    }
+
+    .fileData {
+      flex: 1 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+
+      .size {
+        font-size: 12px;
+        color: $text-light;
+      }
+    }
+
+    button {
+      margin-left: auto;
+    }
+  }
+}
+
+.inputFilePreview {
+  gap: 4px;
+  border: 1px dashed $border;
+  border-radius: 8px;
+  padding: 4px 15px 4px 4px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &__item {
+    position: relative;
+    width: 75px;
+    height: 56px;
+    border-radius: 4px;
+
+
+    button {
+      border: none;
+      padding: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      right: 1px;
+      top: 1px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 24px;
+
+        &:before {
+          color: $white;
+        }
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 1);
+      }
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 56px;
+      position: absolute;
+      overflow: hidden;
+    }
+  }
+}
+
+.inputFile {
+  gap: 5px 10px;
+  border: 1px dashed $border;
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &--loaded {
+    background-color: $button;
+  }
+
+  &__text {
+    color: $text-light;
+    font-size: 12px;
+    line-height: 17px;
+    flex: 1 1 0;
+  }
+
+  &__file {
+    background-color: $primary-light;
+    border-radius: 6px;
+    padding: 7px 5px 7px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    span {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 12px;
+      color: $text;
+    }
+
+    > button {
+      border-radius: 10px;
+
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+
+  &__fileBigPreview {
+    order: 2;
+    border-radius: 6px;
+    background-color: $border;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    flex-grow: 1;
+
+    .icon i {
+      font-size: 28px;
+    }
+
+    .fileData {
+      flex-direction: column;
+      gap: 4px;
+      flex-grow: 1;
+      line-height: 15px;
+      overflow: hidden;
+
+      .name {
+        white-space: nowrap;
+      }
+
+      .size {
+        font-size: 12px;
+        color: $text-light;
+      }
+    }
+
+    button {
+      position: relative;
+      top: -5px;
+      border-radius: 50%;
+
+      &:hover {
+        background-color: $white;
+      }
+
+    }
+  }
+
+  &__button {
+    border: 1px solid $border;
+    box-shadow: 0 1px 3px #9ABA9F40;
+    border-radius: 6px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex: 0 0 34px;
+    background-color: transparent;
+    margin-left: auto;
+    order: 3;
+  }
+
+  &--previewImage {
+    justify-content: center;
+
+    .inputFile__text {
+      max-width: 235px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .inputFile__button {
+      margin-left: 0;
+    }
+  }
+
+  &.small {
+    padding: 8px 15px;
+    white-space: nowrap;
+  }
+
+  &.white {
+    background-color: $white;
+  }
+}
+
+.title-divider {
+  position: relative;
+  font-size: 18px;
+  font-family: "Lato Bold", sans-serif;
+  display: flex;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    height: 1px;
+    background-color: $border;
+  }
+
+  .text {
+    background-color: $white;
+    padding-right: 10px;
+    position: relative;
+    margin-right: auto;
+
+    &.center {
+      padding-left: 10px;
+      margin-left: auto;
+    }
+  }
+}
+
+.size12 {
+  font-size: 12px;
+}
+
+.size13 {
+  font-size: 13px;
+}
+
+.size16 {
+  font-size: 16px;
+}
+
+.size18 {
+  font-size: 18px;
+}
+
+.size20 {
+  font-size: 20px;
+}
+
+.size24 {
+  font-size: 20px;
+}
+
+/**
+    lines
+ */
+
+.border-top {
+  border-top: 1px solid $border;
+}
+
+.solidLine {
+  border-bottom: 1px solid $border;
+}
+
+.solidVerticalLine {
+  border-left: 1px solid $border;
+
+  &.transparent {
+    border-color: transparent;
+  }
+}
+
+.dashedLine {
+  border-bottom: 1px dashed $border;
+}
+
+.dashedVerticalLine {
+  border-right: 1px dashed $border;
+  min-height: 100%;
+}
+
+/**
+    radioInput
+ */
+
+.radioInput {
+  display: flex;
+  cursor: pointer;
+
+  .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: -5px;
+  }
+
+  input {
+    display: none;
+
+    & + span {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      background-color: $white;
+      box-shadow: 0 0 0 1px $border;
+    }
+
+    &:checked {
+
+      + span {
+        box-shadow: 0 0 0 1px $primary;
+        border: 4px solid $white;
+        background-color: $primary;
+      }
+    }
+  }
+}
+
+/**
+    dialogSearch
+ */
+
+.dialogSearch {
+  border: 1px solid $border;
+  border-radius: 6px;
+  background-color: $button;
+  padding-right: 5px;
+  padding-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  box-sizing: border-box;
+
+  button {
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    background-color: transparent;
+    color: $text;
+    padding: 0;
+
+    &:disabled {
+      color: $text-light;
+      cursor: default;
+    }
+
+    i:before {
+      color: inherit;
+    }
+  }
+
+  input {
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    color: $text;
+    flex-grow: 1;
+  }
+
+  span.clear {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    i {
+      position: relative;
+    }
+
+    &:hover:before {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: #e9ece9;
+      left: 50%;
+      top: 50%;
+      margin-left: -9px;
+      margin-top: -9px;
+      content: '';
+    }
+  }
+
+  .found {
+    white-space: nowrap;
+  }
+}
+
+ng-select.ng-select {
+  color: inherit;
+
+  .ng-select-container.ng-has-value {
+    .ng-placeholder {
+      display: none;
+    }
+  }
+
+  .ng-placeholder {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .ng-value-label {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    i,
+    .ng-option__smallText {
+      display: none;
+    }
+
+    img {
+      max-width: 20px;
+      height: auto;
+      margin-right: 5px;
+
+      vertical-align: middle;
+      margin-bottom: 3px;
+    }
+  }
+
+  .ng-arrow-wrapper {
+    //width: 20px;
+    //margin-right: 6px;
+    width: 30px;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ng-arrow {
+      width: auto;
+      height: auto;
+      display: block;
+
+      &:after {
+        display: block;
+        font-family: 'icomoon' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        content: "\e900";
+        color: inherit;
+        font-size: 20px;
+      }
+    }
+  }
+
+  &.ng-select-opened .ng-arrow {
+    transform: rotate(180deg);
+  }
+
+  .ng-clear-wrapper {
+    width: 20px;
+    color: $text-light;
+    display: flex;
+    align-items: center;
+
+    .ng-clear {
+      font-size: 0;
+      display: block;
+
+      &:after {
+        display: block;
+        font-family: 'icomoon' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        content: "\e901";
+        font-size: 20px;
+        height: 20px;
+        color: $text-light;
+        border-radius: 50%;
+        background-color: #F0F0F0;
+
+        //content: "\e907";
+        //font-size: 20px;
+        //color: $alternate-red;
+      }
+    }
+  }
+
+  .ng-value-container {
+    position: relative;
+    overflow: hidden;
+
+    .ng-value {
+      overflow: hidden;
+    }
+  }
+
+  &.ng-select-single .ng-value {
+    flex-grow: 1;
+  }
+
+  .ng-select-container {
+    height: 100%;
+
+    .ng-value-container {
+      align-items: center;
+      margin-left: 12px;
+      margin-right: 6px;
+      padding-left: 1px;
+      box-sizing: border-box;
+
+      .ng-input {
+        display: flex;
+        align-items: center;
+
+        > input {
+          font: inherit;
+          box-sizing: border-box;
+          color: inherit;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }
+
+  .ng-value {
+    color: inherit;
+  }
+
+  &.ng-select-multiple {
+
+    .ng-value-container {
+      gap: 5px;
+      padding: 4px 0;
+    }
+
+    .ng-value {
+      flex-direction: row-reverse;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 8px;
+      background-color: $primary-light;
+      font-size: 12px;
+      border-radius: 8px;
+      height: 24px;
+
+      .ng-value-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        position: relative;
+        cursor: pointer;
+        font-size: 0;
+
+        &:hover {
+          background-color: $white;
+          border-radius: 50%;
+        }
+
+        &:after {
+          display: block;
+          font-family: 'icomoon' !important;
+          speak: never;
+          font-style: normal;
+          font-weight: normal;
+          font-variant: normal;
+          text-transform: none;
+          line-height: 1;
+
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+
+          content: "\e901";
+          color: inherit;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  .ng-spinner-loader {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    margin-top: -9px;
+    width: 18px;
+    height: 18px;
+    border-left-color: $primary;
+    border-right-color: $primary-light;
+    border-top-color: $primary-light;
+    border-bottom-color: $primary-light;
+  }
+}
+
+/**
+    field || dahField
+ */
+
+.addNewOption {
+  color: $primary;
+  padding: 7px 12px;
+  display: flex;
+  width: 100%;
+  font: inherit;
+
+  &:hover {
+    background-color: $primary-lighten;
+  }
+}
+
+dah-building-input {
+
+  &.disabled,
+  &[disabled="true"]:not([readonly="true"]) {
+    color: $disabled;
+
+    .ng-placeholder,
+    .dahField,
+    .fieldLabel {
+      color: inherit;
+    }
+
+    input {
+      //-webkit-text-fill-color: $disabled;
+      color: $disabled;
+    }
+
+    i:before {
+      color: $disabled;
+    }
+  }
+}
+
+.field {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Lato, sans-serif;
+
+  @media screen and (max-width: $mobileBig) {
+    max-width: 100% !important;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  .dahField {
+    display: flex;
+    flex-grow: 1;
+    color: $text;
+
+    &.gap15 {
+      gap: 15px;
+    }
+
+    &--vertical {
+      gap: 6px;
+      flex-direction: column;
+      flex-grow: 0;
+      width: 100%;
+
+      &End {
+        .fieldLabel {
+          text-align: right;
+        }
+      }
+    }
+
+    &--horizontal {
+      gap: 15px;
+      align-items: center;
+      flex-direction: row;
+
+      &.gap10 {
+        gap: 10px;
+      }
+
+      &.label-right {
+        .fieldLabel {
+          text-align: right;
+        }
+      }
+
+      &Big {
+        align-items: flex-start;
+
+        .fieldLabel {
+          margin-top: 8px;
+        }
+      }
+
+      .fieldLabel {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      &Small {
+        gap: 10px;
+
+        .fieldLabel {
+          font-size: 13px;
+
+          &:after {
+            display: none;
+          }
+        }
+      }
+
+      .inputFile {
+        padding: 5px 10px 5px 15px;
+
+        &__button {
+          width: 20px;
+          height: 20px;
+          flex: 0 0 20px;
+          border: unset;
+          box-shadow: unset;
+        }
+      }
+    }
+
+    &--mobileVertical {
+
+      @media screen and (max-width: $mobileBig) {
+        gap: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .fieldLabel {
+          font-size: 12px;
+          white-space: nowrap;
+        }
+
+        .fieldControls {
+          width: 100%;
+        }
+      }
+    }
+
+    &--inlineDescription {
+      gap: 6px 10px;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
+
+      .fieldControls.fieldControls {
+        flex-grow: 0;
+      }
+
+      .fieldLabel {
+        width: 100%;
+      }
+
+      .inlineDescription {
+        font-size: 12px;
+        color: $text-light;
+      }
+
+    }
+
+    &--form {
+
+      .fieldControls {
+        min-height: 34px;
+        border-radius: 8px;
+        border: 1px solid $border;
+        box-sizing: border-box;
+
+        .ng-select {
+          margin-left: -1px;
+          margin-right: -1px;
+          width: calc(100% + 2px);
+        }
+      }
+
+      &.dahField--message {
+        padding-bottom: 0;
+        margin-bottom: 0;
+
+        .fieldControls {
+          border-top-left-radius: 0;
+        }
+      }
+
+      &:not([disabled="true"]):not([readonly="true"]):not(.disabled) {
+        .fieldControls {
+
+          &:hover {
+            box-shadow: 0 1px 2px #00000017;
+          }
+        }
+
+        &.dahField--message:hover {
+          box-shadow: 0 2px 20px #4AA25F22;
+        }
+
+        &[focused="true"] {
+
+          .fieldControls {
+            border-color: $primary-light;
+
+            &:hover {
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+
+    &--documents {
+
+      .fieldControls {
+        min-height: 30px;
+      }
+
+      &.full-height {
+        .fieldControls {
+          height: inherit;
+        }
+      }
+
+      &Big {
+        height: 100%;
+      }
+    }
+
+    &--filter {
+
+      .fieldControls {
+        height: auto;
+        min-height: 24px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        box-sizing: border-box;
+
+        .fieldActions {
+          height: 22px;
+
+          i {
+            border: none;
+          }
+        }
+      }
+
+      ng-select.ng-select.ng-select-multiple {
+
+        .ng-value-container {
+          padding: 0;
+        }
+
+        .ng-value {
+          background-color: $border;
+          border-radius: 6px;
+          padding: 0 6px;
+          height: 22px;
+        }
+      }
+    }
+
+    &--autoHeight {
+
+      &.dahField--documents {
+        .fieldControls {
+          min-height: 30px;
+        }
+      }
+
+      .fieldControls {
+        height: auto;
+        min-height: 34px;
+      }
+
+      ng-select.ng-select.ng-select-multiple .ng-value-container {
+        max-height: 150px;
+        overflow: auto;
+      }
+    }
+
+    &--smallSizes {
+
+      .fieldLabel {
+        font-size: 10px;
+        line-height: 12px;
+      }
+
+      .fieldControls {
+        font-size: 13px;
+      }
+    }
+
+    &--filled {
+
+      .inputFile,
+      .fieldControls {
+        background-color: $white;
+      }
+    }
+
+    &.dahField--filledPrimaryLight {
+
+      .fieldControls {
+        background-color: $primary-light;
+        border-color: $primary-light;
+      }
+    }
+
+    &.dahField--filledBackground {
+
+      .fieldControls {
+        background-color: $background;
+        border-color: $background;
+      }
+    }
+
+    &.dahField--filledButton {
+
+      .fieldControls {
+        background-color: $button;
+      }
+    }
+
+    &[required] .fieldLabel:after {
+      content: '*';
+      color: inherit;
+      margin-left: 2px;
+    }
+
+    &[focused="true"]:not([disabled="true"]):not(.dahField--filledBackground) {
+
+      .fieldControls {
+        background-color: $white;
+      }
+    }
+
+    &[readonly="true"] {
+      input {
+        //-webkit-text-fill-color: $text-light;
+        color: $text-light;
+        cursor: default;
+      }
+
+      .fieldData {
+        color: $text-light;
+      }
+    }
+
+    &.disabled,
+    &[disabled="true"]:not([readonly="true"]) {
+      color: $disabled;
+
+      .fieldActions i:before,
+      .fieldLabel {
+        color: inherit;
+      }
+
+      .ng-value-label img {
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        filter: grayscale(100%);
+      }
+
+      button.fieldControls {
+        cursor: default;
+      }
+
+      input {
+        //-webkit-text-fill-color: $disabled;
+        color: $disabled;
+      }
+
+      i:before {
+        color: $disabled;
+      }
+    }
+
+    .fieldControls {
+      display: flex;
+      box-sizing: border-box;
+      flex-grow: 1;
+      //overflow: hidden;
+      position: relative;
+      min-width: 0;
+    }
+
+    .fieldData {
+      overflow: hidden;
+      border-radius: inherit;
+      flex-grow: 1;
+      display: flex;
+      position: relative;
+
+      > * {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+
+        text-align: inherit;
+      }
+
+      > .fieldButtons {
+        width: auto;
+        padding-right: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      > .attention {
+        width: auto;
+      }
+
+      .text-container {
+        padding-left: 12px;
+        padding-right: 12px;
+        display: flex;
+        align-items: center;
+      }
+
+      > input {
+        padding-left: 12px;
+        padding-right: 12px;
+        box-sizing: border-box;
+        padding-bottom: 1px;
+
+        &.date-input {
+          padding-right: 5px;
+        }
+      }
+
+      textarea,
+      input {
+        font: inherit;
+        opacity: 1;
+      }
+    }
+
+    &:not(.ng-invalid) {
+
+      textarea,
+      input {
+        color: inherit;
+      }
+    }
+
+    .with-months-pager {
+      width: 230px;
+
+      &.clearable {
+        width: 240px;
+      }
+
+      .fieldData {
+
+        ng-select,
+        input {
+          font-family: "Lato Bold", sans-serif;
+        }
+      }
+    }
+
+    .monthPager {
+      width: 34px;
+      //height: 34px;
+      flex: 0 0 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      padding: 0;
+      background-color: transparent;
+
+      &--prev {
+        border-right: 1px solid $border;
+      }
+
+      &--next {
+        border-left: 1px solid $border;
+      }
+
+      i:before {
+        color: $text;
+      }
+
+      &[disabled] {
+        cursor: default;
+
+        i:before {
+          color: $text-light;
+        }
+      }
+    }
+
+  }
+
+  .fieldLabel {
+    display: block;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: left;
+    color: $text-light;
+
+    &.df {
+      display: flex;
+    }
+
+    i {
+      height: 15px;
+      font-size: 18px;
+
+      &.icon-info_button {
+        margin-left: 3px;
+      }
+    }
+  }
+
+  .fieldLabelInsideInput {
+    display: flex;
+    align-items: center;
+    margin: 5px 0 5px 12px;
+    padding-right: 10px;
+    border-right: 1px solid $border;
+    white-space: nowrap;
+    color: $text-light;
+  }
+
+  .attention {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    height: 100%;
+    margin-right: 10px;
+
+    &__trigger {
+      gap: 4px;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: $accent;
+      cursor: pointer;
+    }
+  }
+
+  .fieldActions {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 100%;
+
+    button {
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      height: 100%;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+    }
+
+    .icon-filter_close:before {
+      border-radius: 50%;
+      background-color: #F0F0F0;
+    }
+
+    &--border {
+      justify-content: flex-end;
+
+      &.multiple {
+        height: 32px;
+        min-height: 32px;
+        gap: 2px;
+      }
+
+      &.hide {
+        max-width: 27px;
+        overflow: hidden;
+        position: relative;
+
+        i:before {
+          mask-image: linear-gradient(270deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+      }
+
+      &:not(.multiple) {
+        i {
+          border-left: 1px solid $border;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    i {
+      height: 100%;
+      width: 30px;
+      min-width: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.icon-clear:before {
+        color: $alternate-red;
+      }
+
+      &:before {
+        color: $text-light;
+      }
+
+      &.icon-filter_close {
+        //width: 20px;
+        //min-width: 20px;
+      }
+    }
+  }
+
+}
+
+.btn-field {
+  align-items: center;
+  display: flex;
+
+  &.btn-field-vertical {
+    padding-top: 21px;
+  }
+}
+
+.password-hider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  margin-right: 10px;
+  user-select: none;
+}
+
+.descriptionText {
+  color: inherit;
+  text-align: right;
+  font-size: 12px;
+  line-height: 14px;
+  width: 100%;
+}
+
+.supportText {
+  color: $text-light;
+  font-size: 13px;
+  line-height: 15px;
+  width: 100%;
+
+  &.large {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+/**
+    .field error States
+ */
+div.ng-submitted,
+tr.ng-submitted,
+form.ng-submitted.ng-submitted.ng-submitted {
+
+  .ng-invalid:not(form) {
+
+    .dahField--documents:not(.dahField--form),
+    &.dahField--documents:not(.dahField--form) {
+
+      .fieldData {
+        position: relative;
+
+        &:after {
+          content: "";
+          position: absolute;
+          border-bottom: 1px solid #E38377;
+          bottom: 1px;
+          right: 3px;
+          left: 3px;
+        }
+      }
+    }
+
+    .dahField--form,
+    &.dahField--form {
+
+      .fieldLabel {
+        color: $alternate-red;
+      }
+
+      .fieldControls.fieldControls {
+        border-color: $alternate-red !important;
+      }
+    }
+
+    .inputFile {
+      border-color: $alternate-red;
+    }
+
+    .fieldLabel {
+      color: inherit;
+    }
+  }
+
+  dah-input-editor.ng-invalid {
+
+    .NgxEditor__Wrapper {
+      border-color: $alternate-red;
+    }
+
+    .NgxEditor__noteText {
+      color: $alternate-red;
+    }
+  }
+}
+
+/*
+  dahField ↑
+**/
+
+.field-tooltip-text {
+  padding: 5px;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: $white;
+  border-radius: 6px;
+  border: 1px solid $alternate-red;
+  position: absolute;
+  z-index: 2;
+
+  right: -1px;
+  left: -1px;
+  text-align: center;
+  box-shadow: 0 3px 15px rgba($alternate-red, 0.10);
+
+  &.bottom {
+    margin-top: 6px;
+    top: 100%;
+
+    &:before {
+
+      border-right-width: 7px;
+      border-left-width: 7px;
+      border-bottom: 7px solid $white;
+      top: -6px;
+    }
+
+    &:after {
+      border-right-width: 7px;
+      border-left-width: 7px;
+      border-bottom: 7px solid $alternate-red;
+      top: -7px;
+    }
+  }
+
+  &.top {
+    margin-bottom: 6px;
+    bottom: 100%;
+
+    &:before {
+
+      border-right-width: 7px;
+      border-left-width: 7px;
+      border-top: 7px solid $white;
+      bottom: -6px;
+    }
+
+    &:after {
+      border-right-width: 7px;
+      border-left-width: 7px;
+      border-top: 7px solid $alternate-red;
+      bottom: -7px;
+    }
+  }
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    border: 0 solid transparent;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    border: 0 solid transparent;
+
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+}
+
+.field-inline-container {
+  height: 34px;
+  align-items: center;
+  display: flex;
+}

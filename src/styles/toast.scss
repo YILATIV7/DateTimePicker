@@ -1,0 +1,89 @@
+@import "variables";
+
+.dah-toast {
+  position: relative;
+  border-radius: 2px;
+  background-color: $white;
+  font-family: 'Lato', sans-serif;
+  padding: 17px 20px 16px 54px;
+  pointer-events: auto;
+  width: 380px;
+  box-sizing: border-box;
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+
+  &:not(:first-of-type) {
+    margin-top: 10px;
+  }
+
+  &.medium {
+    width: 280px;
+  }
+}
+
+.dah-toast-error {
+  box-shadow: 0 2px 15px #D6877B59 !important;
+  border: 1px solid #E383774B !important;
+  background: $white url("/assets/images/common/wrong_notification.svg") no-repeat 15px 50% !important;
+}
+
+.dah-toast-info {
+  box-shadow: 0 2px 15px #57B2DB55 !important;
+  border: 1px solid $alternate-blue !important;
+  background: $white url("/assets/images/common/info_notification.svg") no-repeat 15px 50% !important;
+}
+
+.dah-toast-success {
+  box-shadow: 0 2px 15px #619F6659 !important;
+  border: 1px solid $primary-light !important;
+  background: $white url("/assets/images/common/success_notification.svg") no-repeat 15px 50% !important;
+}
+
+.dah-toast-warning {
+  box-shadow: 0 2px 7px #D9915359 !important;
+  border: 1px solid #D991535F !important;
+  background: $white url("/assets/images/common/attention_notification.svg") no-repeat 15px 50% !important;
+}
+
+button.toast-close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: transparent url("/assets/images/common/close_icon.svg") 50% 50%;
+  background-size: 150% 150%;
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+//fix mobile style
+.toast-container.toast-container .toast-close-button {
+  right: 5px;
+  top: 5px;
+}
+
+.toast-title {
+  color: $text;
+  font-size: 14px;
+  border-left: 1px solid $border;
+  padding-left: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast-message {
+  color: $text-light;
+  font-size: 14px;
+  border-left: 1px solid $border;
+  padding-left: 15px;
+}

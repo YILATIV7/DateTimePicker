@@ -2,7 +2,7 @@
     {{ label }}
 </span>
 
-<div [ngStyle]="fieldControlsWidth ? {width: fieldControlsWidth + 'px'} : {}" class="fieldControls">
+<div [ngStyle]="fieldControlsWidth ? {width: fieldControlsWidth + 'px important!'} : {}" class="fieldControls">
     <div class="fieldData">
 
         <input #dateInput
@@ -78,8 +78,8 @@
 <!--        <button type="button">-->
 <!--            <i class="icon-filter_close"></i>-->
 <!--        </button>-->
-        <button type="button">
-            <i class="{{iconClassName}}"></i>
+        <button>
+            Open
         </button>
     </div>
 </div>

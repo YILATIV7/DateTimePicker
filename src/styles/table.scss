@@ -1,0 +1,1406 @@
+@import "variables";
+
+tr.can-open {
+  cursor: pointer;
+}
+
+.dahPagesContent {
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+
+  &::-webkit-scrollbar-track {
+    margin-right: 10px;
+  }
+
+  &Inner {
+    flex-grow: 1;
+    overflow: auto;
+  }
+}
+
+.sectionTable-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+table.sectionTable {
+  font-family: Lato, sans-serif;
+  border-spacing: 0;
+  display: flex;
+  width: auto;
+  flex-grow: 1;
+
+  //flex-direction: column;
+  flex-wrap: wrap;
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .bigRow {
+    flex: 1 1 0;
+    min-width: 200px;
+    word-break: break-word;
+
+    &.wButton {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  thead {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: $white;
+    flex-grow: 1;
+    min-width: 100%;
+  }
+
+  th {
+    padding: 5px 10px;
+    color: $text-light;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:first-child {
+      padding-left: 20px;
+    }
+
+    &:last-child {
+      padding-right: 20px;
+    }
+
+    &.table-actions {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  tbody {
+    line-height: 20px;
+
+    &.cdk-drop-list {
+      flex-direction: column;
+    }
+
+    &.alternation-grouped {
+      .parent-tr {
+        background-color: $background;
+
+        .arrow {
+
+          &:before {
+            color: $text;
+          }
+
+          &.rotated {
+            transform: rotate(90deg);
+          }
+        }
+      }
+
+      .child-tr {
+
+        &.border {
+          border-top: 1px solid $border;
+        }
+
+        .arrow-step {
+          padding-left: 75px;
+        }
+      }
+    }
+
+    &.content-grouped {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .group-container {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $border;
+        padding: 0 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 1px #0000000A;
+      }
+
+      td:first-child {
+        padding-left: 0;
+      }
+
+      td:last-child {
+        padding-right: 0;
+      }
+
+      .table-actions {
+        width: 30px;
+        min-width: 30px;
+      }
+    }
+
+    &.alternation {
+
+      dah-organization-document-row:nth-child(2n+1) tr,
+      > tr:nth-child(2n+1) {
+        background-color: $background;
+      }
+    }
+
+    &.separated {
+      gap: 5px;
+
+      tr {
+        background-color: $background;
+      }
+    }
+
+    &.border {
+      td {
+        border-bottom: 1px solid $border;
+      }
+    }
+
+    tr.loading.loading {
+      background: $white;
+
+      &.load-more {
+        padding: 10px;
+        box-sizing: border-box;
+      }
+    }
+
+
+    tr {
+      position: relative;
+
+      &.archived {
+        color: $text-light;
+      }
+
+      &.grouped {
+        background-color: $alternate-group;
+      }
+    }
+
+    dah-organization-document-row tr:not(.loading):hover,
+    tr:not(.loading):not(.no-hover):hover {
+      box-shadow: 0 3px 6px #00000021;
+      z-index: 1;
+      border-bottom-color: transparent;
+    }
+
+    td {
+      padding: 10px 10px;
+      font-size: 14px;
+      line-height: 20px;
+      vertical-align: top;
+      box-sizing: border-box;
+
+      display: flex;
+      align-items: center;
+
+      &:first-child {
+        padding-left: 20px;
+      }
+
+      &:last-child {
+        padding-right: 20px;
+      }
+    }
+
+    .documentName {
+      display: flex;
+      gap: 12px;
+    }
+  }
+
+  &.table-content-grouped {
+
+    thead {
+      padding: 5px 20px;
+      background-color: rgba($alternate-blue, 0.05);
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+    }
+
+    .group-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid $border;
+      padding: 0 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 1px #0000000A;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: 0;
+    }
+
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
+    }
+
+    .table-actions {
+      width: 30px;
+      min-width: 30px;
+    }
+  }
+
+  i.icon-more {
+    display: block;
+    cursor: pointer;
+  }
+
+  i.icon-api {
+    font-size: 16px;
+
+    &.not-operative {
+      .path1:before {
+        color: #C3C3C3;
+      }
+
+      .path2:before {
+        color: #fff;
+      }
+    }
+  }
+
+  tr {
+    display: flex;
+  }
+
+  .status-ico {
+
+    &.active:before {
+      color: $primary;
+    }
+
+    &.passive:before {
+      color: $disabled;
+    }
+  }
+
+  .dateTime {
+    width: 150px;
+    min-width: 150px;
+  }
+
+  .dateTimeIco {
+    gap: 10px;
+    display: flex;
+    width: 175px;
+    min-width: 175px;
+  }
+
+  .code {
+    flex: 0 0 80px;
+    min-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .docNumber {
+    flex: 0 0 120px;
+    min-width: 120px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .docNumberInfo {
+      flex: 1 0 50px;
+      min-width: 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .info-row {
+    width: 20px;
+    min-width: 20px;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .docNumberStatus {
+    width: 24px;
+    min-width: 24px;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+
+    i.icon-handwrite {
+      font-size: 24px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .comment {
+    word-break: break-word;
+  }
+
+  .total {
+    width: 140px;
+    min-width: 140px;
+    padding-right: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+  }
+
+  th.align-right {
+    text-align: right;
+  }
+
+  td.align-right {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  th.align-center {
+    text-align: center;
+  }
+
+  td.align-center {
+    justify-content: center;
+  }
+
+  .table-actions {
+    width: 50px;
+    min-width: 50px;
+
+    .editRow {
+      display: block;
+    }
+
+    span:hover i:not(.icon-check_button):before {
+      color: $text;
+    }
+  }
+}
+
+/**
+      dialogFormTable
+ */
+
+.dialogFormTable-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+table.dialogFormTable {
+  width: auto;
+  flex: 1 1 100%;
+  font-family: Lato, sans-serif;
+  border-spacing: 0;
+  display: flex;
+  flex-direction: column;
+
+  /**
+  fix flex without virtual scroll, for example accounting_entry
+   */
+  //min-width: 300px;
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  &--border {
+    border-left: 1px solid $border;
+    border-right: 1px solid $border;
+    border-top: 1px solid $border;
+  }
+
+  &.virtual {
+
+    tbody {
+      display: contents;
+    }
+  }
+
+  thead {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: $background;
+
+    &.with-scroll {
+      padding-right: 4px;
+      padding-left: 4px;
+    }
+  }
+
+  th {
+    padding: 5px 10px;
+    font-family: "Lato Bold", sans-serif;
+    color: $text;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    min-height: 26px;
+    border-bottom: 1px solid $border;
+
+    &.text-right {
+      text-align: right;
+    }
+
+    &.text-center {
+      text-align: center;
+    }
+
+    &.colspan-th {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+
+      .colspan-th-item {
+        display: flex;
+        flex-grow: 1;
+
+        &:not(:first-child) {
+          border-top: 1px solid $border;
+        }
+
+        .colspan-th-item-child {
+          padding: 5px 10px;
+          box-sizing: border-box;
+          align-items: center;
+          display: flex;
+
+          &:not(:first-child) {
+            border-left: 1px solid $border;
+          }
+        }
+      }
+    }
+
+    &.number {
+      text-align: right;
+      color: $text-light;
+    }
+
+    &:not(:first-child) {
+      border-left: 1px solid $border;
+    }
+
+    &.border {
+      border-left: 1px solid $border;
+    }
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+  }
+
+  .thLabels {
+    padding: 0;
+    flex-direction: column;
+  }
+
+  .thLabel {
+    padding: 5px 10px;
+    box-sizing: border-box;
+
+    &--tar {
+      text-align: right;
+    }
+
+    &--tac {
+      text-align: center;
+    }
+  }
+
+  tbody {
+
+    &.with-scroll {
+      overflow-x: auto;
+      padding-left: 4px;
+      overflow-y: scroll;
+    }
+
+    tr.selected {
+      background-color: $primary-lighten;
+    }
+
+    &:not(.focused) {
+
+      tr:hover {
+        z-index: 1;
+        border-bottom-color: transparent;
+        position: relative;
+        background-color: $primary-lighten;
+      }
+    }
+
+    tr.matched {
+      background-color: $matchedBg;
+    }
+
+    tr.highlighted {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        border-bottom: 1px solid $matchedBorder;
+        bottom: 1px;
+        right: 3px;
+        left: 3px;
+      }
+    }
+
+    tr.highlighted-warning {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        border-bottom: 1px solid $alternate-red;
+        bottom: 1px;
+        right: 3px;
+        left: 3px;
+      }
+    }
+
+    .selected-tr {
+      z-index: 1;
+      border-bottom-color: transparent;
+      position: relative;
+      background-color: $row-focused;
+    }
+
+    .selected-td {
+      background-color: $element-focused;
+      position: relative;
+      z-index: 2;
+    }
+
+    tr {
+      color: $text;
+    }
+
+    td {
+      vertical-align: middle;
+      padding: 5px 10px;
+      color: inherit;
+      font-size: 14px;
+      line-height: 20px;
+      box-sizing: border-box;
+      border-bottom: 1px solid $border;
+      text-overflow: ellipsis;
+
+      &.text-right {
+        text-align: right;
+      }
+
+      &.text-center {
+        text-align: center;
+      }
+
+      &.rowspan-td {
+        display: flex;
+        padding: 0;
+
+        .rowspan-td-item {
+          padding: 5px 10px;
+          box-sizing: border-box;
+
+          &:not(:first-child) {
+            border-left: 1px solid $border;
+          }
+        }
+      }
+
+      &.colspan-td {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+
+        .colspan-td-item {
+          display: flex;
+          flex-grow: 1;
+
+          &:not(:first-child) {
+            border-top: 1px solid $border;
+          }
+
+          .colspan-td-item-child {
+            min-width: 0;
+            display: flex;
+            box-sizing: border-box;
+
+            &:not(.field-container) {
+              padding: 5px 10px;
+              box-sizing: border-box;
+            }
+
+            &:not(:first-child) {
+              border-left: 1px solid $border;
+            }
+          }
+        }
+      }
+
+      &.number {
+        color: $text-light;
+        white-space: nowrap;
+      }
+
+      &:not(:first-child) {
+        border-left: 1px solid $border;
+      }
+
+      &.border {
+        border-left: 1px solid $border;
+      }
+
+      sup {
+        font-size: 10px;
+        vertical-align: baseline;
+        position: relative;
+        top: -4px;
+      }
+    }
+  }
+
+  tfoot {
+    position: sticky;
+    z-index: 5;
+    bottom: 0;
+
+    &.with-scroll {
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    tr {
+      background-color: $primary-lighten;
+
+      &:not(:first-child) {
+        td {
+          &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            right: 0;
+            border-top: 1px solid $border;
+          }
+        }
+      }
+    }
+
+    td {
+      min-height: 30px;
+      position: relative;
+      line-height: 20px;
+      font-size: 14px;
+      text-shadow: 0 0 $text;
+      padding: 5px 12px;
+      box-sizing: border-box;
+      background-color: inherit;
+
+      &:first-child {
+        padding-left: 15px;
+      }
+
+      &:not(:last-child):not(.noBorder):before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 5px;
+        bottom: 5px;
+        border-left: 1px solid $border;
+      }
+    }
+  }
+
+  tr {
+    display: flex;
+  }
+
+  .number {
+    width: $documentRow_number;
+    min-width: $documentRow_number;
+    overflow: hidden;
+  }
+
+  .flowItem {
+    flex: 1 0 150px;
+    min-width: 150px;
+  }
+
+  .balanceAccount {
+    width: $documentRow_balanceAccount;
+    min-width: $documentRow_balanceAccount;
+  }
+
+  .price {
+    width: $documentRow_price;
+    min-width: $documentRow_price;
+    overflow: hidden;
+  }
+
+  .amount {
+    width: $documentRow_amount;
+    min-width: $documentRow_amount;
+    overflow: hidden;
+  }
+
+  .area {
+    width: $documentRow_area;
+    min-width: $documentRow_area;
+  }
+
+  .floor {
+    width: $documentRow_floor;
+    min-width: $documentRow_floor;
+  }
+
+  .registered {
+    width: $documentRow_registered;
+    min-width: $documentRow_registered;
+  }
+
+  .living {
+    width: $documentRow_living;
+    min-width: $documentRow_living;
+  }
+
+  .unit {
+    width: $documentRow_unit;
+    min-width: $documentRow_unit;
+  }
+
+  .count {
+    width: $documentRow_count;
+    min-width: $documentRow_count;
+  }
+
+  .consumed {
+    width: $documentRow_consumed;
+    min-width: $documentRow_consumed;
+    overflow: hidden;
+  }
+
+  .consumed,
+  .amount,
+  .count,
+  .area,
+  .number,
+  .price {
+    text-align: right;
+  }
+
+  .living,
+  .registered,
+  .floor {
+    text-align: center;
+  }
+
+  .dateTime {
+    width: 135px;
+  }
+
+  .dateShort {
+    width: 115px;
+  }
+
+  .table-actions {
+    width: $documentRow_tableActions;
+    min-width: $documentRow_tableActions;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &.table-actions--single {
+      width: 44px;
+      min-width: 44px;
+    }
+  }
+
+  td.field {
+    padding: 0;
+
+    .input-value-text {
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 10px;
+      margin-right: 6px;
+      padding-left: 1px;
+      box-sizing: border-box;
+      display: flex;
+      flex-grow: 1;
+      white-space: nowrap;
+
+      &--no-actions {
+        margin-right: 12px;
+      }
+
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    ng-select.ng-select .ng-select-container .ng-value-container {
+      margin-left: 10px;
+    }
+  }
+
+  i.icon-more {
+    display: block;
+    cursor: pointer;
+  }
+}
+
+/**
+    parameters for table
+ */
+
+.parametersTrigger {
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid $border;
+  line-height: 20px;
+  padding: 1px 10px;
+  background-color: $white;
+  box-shadow: 0 1px 3px #9ABA9F40;
+  position: relative;
+  display: inline-block;
+  margin-top: -2px;
+}
+
+tooltip.parametersTooltip.tooltip-light {
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid $border;
+  font-size: 13px;
+  line-height: 18px;
+  padding: 10px;
+  background-color: $white;
+  box-shadow: 0 1px 3px #9ABA9F40;
+  color: $text;
+  margin: unset;
+
+  &.parametersTooltip--big {
+    max-width: 260px;
+  }
+
+  .parametersList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+
+    .parametersOption {
+      font-size: 13px;
+      line-height: 16px;
+      padding-left: 12px;
+      position: relative;
+
+      &:before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: absolute;
+        left: 0;
+        top: 5px;
+        background-color: $primary-light;
+      }
+    }
+  }
+}
+
+.reports__tableContainer {
+  position: relative;
+  flex: 1;
+}
+
+.reportsTableContent {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reportsTable {
+  border-collapse: collapse;
+
+  button[aria-expanded="true"] {
+    background-color: $primary-lighten;
+  }
+
+  &Wrapper {
+    border-radius: 10px 10px 0 0;
+    border-left: 1px solid $border;
+    border-right: 1px solid $border;
+    border-top: 1px solid $border;
+    border-bottom: 1px solid $border;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  thead {
+    position: sticky;
+    z-index: 5;
+    top: 0;
+
+    tr {
+      background-color: $background;
+
+      &:not(:first-child) {
+
+        th:last-child {
+          &:before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border-left: 1px solid $border;
+          }
+        }
+      }
+    }
+
+    th {
+      padding: 6px 20px;
+      font-size: 11px;
+      line-height: 14px;
+      font-family: "Lato Bold", sans-serif;
+      align-items: center;
+      box-sizing: border-box;
+      position: relative;
+
+      &:first-child:not(.no-first) {
+        padding-left: 15px;
+      }
+
+      &:not(:last-child) {
+
+        &:before {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          border-left: 1px solid $border;
+        }
+      }
+
+      &.border {
+
+        &:before {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          border-left: 1px solid $border;
+        }
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid $border;
+      }
+
+    }
+
+    .sort-icon {
+      margin-left: auto;
+    }
+  }
+
+  tbody {
+
+    tr {
+      background-color: $white;
+      border-bottom: 1px solid $border;
+      position: relative;
+
+      &:hover {
+        box-shadow: 0 3px 6px #00000021;
+        z-index: 2;
+        background-color: #F7F7F7;
+        border-bottom-color: transparent;
+      }
+
+      &.highlighted-warning {
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          border-bottom: 1px solid $alternate-red;
+          bottom: 1px;
+          right: 3px;
+          left: 3px;
+        }
+      }
+
+      &.total td {
+        background-color: $primary-lighten;
+      }
+
+      td {
+        font-size: 14px;
+        line-height: 20px;
+        padding: 5px 20px;
+        box-sizing: border-box;
+        position: relative;
+
+        &:first-child:not(.border) {
+          padding-left: 15px;
+        }
+
+        &:not(:last-child) {
+
+          &:before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border-left: 1px solid $border;
+          }
+        }
+
+        .nameData {
+          display: flex;
+          gap: 10px;
+          min-width: 100px;
+
+          .openDoc {
+            color: $text-light;
+            font: inherit;
+            text-align: inherit;
+          }
+
+          .button {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            transform: rotate(90deg);
+
+            button {
+              border: none;
+              padding: 0;
+              background-color: transparent;
+
+              i:before {
+                color: $text;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  tfoot {
+    position: sticky;
+    z-index: 5;
+    bottom: 0;
+
+    tr {
+      background-color: $primary-lighten;
+
+      &:not(:first-child) {
+        td {
+          &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            right: 0;
+            border-top: 1px solid $border;
+          }
+        }
+      }
+    }
+
+    td {
+      min-height: 30px;
+      position: relative;
+      line-height: 20px;
+      font-size: 14px;
+      text-shadow: 0 0 $text;
+      padding: 5px 20px;
+      box-sizing: border-box;
+      background-color: inherit;
+
+      &:first-child {
+        padding-left: 15px;
+      }
+
+      &:not(:last-child):not(.noBorder):before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 5px;
+        bottom: 5px;
+        border-left: 1px solid $border;
+      }
+
+      &:after {
+        //content: '';
+        left: 0;
+        bottom: 0;
+        right: 0;
+        border-bottom: 1px solid $border;
+      }
+    }
+  }
+
+  tr.matched {
+    background-color: $matchedBg;
+  }
+
+  tr.highlighted {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      border-bottom: 1px solid $matchedBorder;
+      bottom: 1px;
+      right: 3px;
+      left: 3px;
+      z-index: 1;
+    }
+  }
+
+  .no-shadow-row {
+    background-color: $white;
+    z-index: 3;
+  }
+
+  .name {
+    text-align: left;
+  }
+
+  .table-actions {
+    width: 60px;
+  }
+
+  .numberName {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+
+    background-color: inherit;
+  }
+
+  .number {
+    min-width: 71px;
+    width: 71px;
+    padding-right: 10px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: inherit;
+
+    & + .name {
+      position: sticky;
+      left: 71px;
+      z-index: 1;
+      background-color: inherit;
+    }
+  }
+
+  .rowNumber {
+    min-width: 71px;
+    width: 71px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: inherit;
+
+    & + .name {
+      position: sticky;
+      left: 71px;
+      z-index: 1;
+      background-color: inherit;
+    }
+  }
+
+  .numberName {
+    min-width: 350px;
+  }
+
+  .rowLevel__0 {
+    background-color: #EFEFEF;
+  }
+
+  .grave {
+    background-color: rgba($alternate-blue, 0.05);
+
+    td {
+      background-color: transparent !important;
+    }
+  }
+
+  .incomeAmount,
+  .expenseAmount,
+  .adjustment,
+  .income,
+  .expense,
+  .amount,
+  .startData,
+  .endData,
+  .balance {
+    width: 130px;
+    min-width: 130px;
+    text-align: right;
+  }
+
+  .code {
+    min-width: 130px;
+  }
+
+  .pan {
+    min-width: 130px;
+    text-align: left;
+  }
+
+  .owner {
+    min-width: 200px;
+    text-align: left;
+  }
+
+  .debit,
+  .credit {
+    text-align: right;
+    width: 130px;
+
+    &.error {
+      color: $alternate-red;
+    }
+  }
+
+  .quantity {
+    width: 70px;
+    text-align: right;
+  }
+}
+
+.table-sort-icon {
+  font-size: 12px;
+
+  &.ASC {
+    transform: rotate(180deg);
+  }
+}
+
+.inform-table {
+  border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
+
+  thead {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    background-color: #fff;
+  }
+
+  thead,
+  tbody {
+    display: flex;
+    flex-direction: column;
+  }
+
+  tr {
+    display: flex;
+  }
+
+  th {
+    height: 28px;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 11px;
+    font-family: "Lato Bold", sans-serif;
+    background-color: $background;
+    border-bottom: 1px solid $border;
+    color: $text-light;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  td {
+    border-left: 1px solid $border;
+    border-bottom: 1px solid $border;
+    padding: 10px 20px;
+    vertical-align: top;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &:last-child {
+      border-right: 1px solid $border;
+    }
+  }
+}
+
+.table-fix {
+  tr {
+    display: flex;
+  }
+
+  th,
+  td {
+    flex: 1 0 100px;
+    min-width: 100px;
+  }
+}
