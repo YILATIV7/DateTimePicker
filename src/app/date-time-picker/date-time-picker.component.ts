@@ -155,7 +155,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
     }
 
     public onFocus(): void {
-        this.selectionGroupController.setFirstGroup();
+        this.selectionGroupController.setGroupOnFocus();
     }
 
     public onBlur(): void {

@@ -7,6 +7,8 @@
 
         <input #dateInput
                #trigger="cdkOverlayOrigin"
+               draggable="false"
+               ondragstart="return false"
                [disabled]="disabled"
                [placeholder]="placeholder ? (placeholder) : ''"
                [readonly]="readonly"

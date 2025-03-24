@@ -3,14 +3,14 @@ import {ElementRef} from '@angular/core';
 export class SelectionGroupController {
     private dateInputRef: ElementRef<HTMLInputElement>;
 
-    private selectedGroup: number;
+    private selectedGroup: number = 0;
 
     private groups = [
-        {value: 0, start: 0, end: 2, touched: false}, // day
-        {value: 0, start: 3, end: 5, touched: false}, // month
-        {value: 0, start: 6, end: 10, touched: false}, // year
-        {value: 0, start: 11, end: 13, touched: false}, // hours
-        {value: 0, start: 14, end: 16, touched: false}, // minutes
+        {value: 0, start: 0, end: 2, touched: false, leadingZero: false}, // day
+        {value: 0, start: 3, end: 5, touched: false, leadingZero: false}, // month
+        {value: 0, start: 6, end: 10, touched: false, leadingZero: false}, // year
+        {value: 0, start: 11, end: 13, touched: false, leadingZero: false}, // hours
+        {value: 0, start: 14, end: 16, touched: false, leadingZero: false}, // minutes
     ];
 
     public setDateInputRef(ref: ElementRef<HTMLInputElement>) {
@@ -36,13 +36,14 @@ export class SelectionGroupController {
         this.setGroup(nextGroup);
     }
 
-    public setFirstGroup(): void {
-        this.setGroup(0);
+    public setGroupOnFocus(): void {
+        this.setGroup(this.selectedGroup);
     }
 
     private setGroup(i: number): void {
         this.selectedGroup = i;
         this.groups[i].touched = false;
+        this.groups[i].leadingZero = false;
         this.setSelection();
     }
 
@@ -52,7 +53,11 @@ export class SelectionGroupController {
     //
 
     public clearGroup(): void {
-        this.groups[this.selectedGroup].value = 0;
+        if (this.groups[this.selectedGroup].value === 0) {
+            this.setPrevGroup();
+        } else {
+            this.groups[this.selectedGroup].value = 0;
+        }
     }
 
     public insertDigit(digit: string) {
@@ -61,47 +66,37 @@ export class SelectionGroupController {
     }
 
     private insertDigitForGroup(digit: string) {
-        console.log("State: ", this.groups);
-
         if (!this.groups[this.selectedGroup].touched) {
             this.groups[this.selectedGroup].touched = true;
             this.groups[this.selectedGroup].value = 0;
+
+            if (digit === '0') {
+                this.groups[this.selectedGroup].leadingZero = true;
+            }
         }
 
         if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10 + parseInt(digit))) {
             this.setNextGroup();
+            this.insertDigitForGroup(digit);
+            return;
         }
 
-        console.log("value: ", this.groups[this.selectedGroup].value);
         this.groups[this.selectedGroup].value = this.groups[this.selectedGroup].value * 10 + parseInt(digit);
-        console.log("value: ", this.groups[this.selectedGroup].value);
 
-        if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10)) {
+        if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10) || this.checkZeroTypedManually()) {
             this.setNextGroup();
         }
     }
 
     private checkGroupFull(groupIndex: number, newValue: number): boolean {
-        switch (groupIndex) {
-            case 0: {
-                return newValue > 31
-            }
-            case 1: {
-                return newValue > 12
-            }
-            case 2: {
-                return newValue > 9999
-            }
-            case 3: {
-                return newValue > 23
-            }
-            case 4: {
-                return newValue > 59
-            }
-            default: {
-                return true;
-            }
-        }
+        const limits = [31, 12, 9999, 23, 59];
+        return newValue > (limits[groupIndex] ?? 0);
+    }
+
+    private checkZeroTypedManually(): boolean {
+        return this.groups[this.selectedGroup].leadingZero
+            && this.groups[this.selectedGroup].value !== 0
+            && this.selectedGroup !== 3;
     }
 
     public getValue() {
@@ -113,11 +108,6 @@ export class SelectionGroupController {
     }
 
     private normalize(value: number, maskSize: number): string {
-        if (maskSize - value.toString().length < 0) {
-            console.log("maskSize: ", maskSize);
-            console.log("value.toString().length: ", value.toString().length);
-            console.log("value.toString(): ", value.toString());
-        }
         return "0".repeat(maskSize - value.toString().length) + value.toString();
     }
 }
