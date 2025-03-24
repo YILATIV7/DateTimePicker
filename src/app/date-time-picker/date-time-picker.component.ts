@@ -146,7 +146,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         }
 
         this.dateInputRef.nativeElement.value = this.selectionGroupController.getValue();
-        this.selectionGroupController.setGroup();
+        this.selectionGroupController.setSelection();
     }
 
     public onClick(): void {

@@ -2,14 +2,15 @@ import {ElementRef} from '@angular/core';
 
 export class SelectionGroupController {
     private dateInputRef: ElementRef<HTMLInputElement>;
+
     private selectedGroup: number;
 
     private groups = [
-        {value: 0, start: 0, end: 2}, // day
-        {value: 0, start: 3, end: 5}, // month
-        {value: 0, start: 6, end: 10}, // year
-        {value: 0, start: 11, end: 13}, // hours
-        {value: 0, start: 14, end: 16}, // minutes
+        {value: 0, start: 0, end: 2, touched: false}, // day
+        {value: 0, start: 3, end: 5, touched: false}, // month
+        {value: 0, start: 6, end: 10, touched: false}, // year
+        {value: 0, start: 11, end: 13, touched: false}, // hours
+        {value: 0, start: 14, end: 16, touched: false}, // minutes
     ];
 
     public setDateInputRef(ref: ElementRef<HTMLInputElement>) {
@@ -18,34 +19,35 @@ export class SelectionGroupController {
 
     /* Setting group */
     public setGroupForCursor(cursorIndex: number): void {
-        if (cursorIndex <= this.groups[0].end) this.setSelection(0); // select day
-        else if (cursorIndex <= this.groups[1].end) this.setSelection(1); // select month
-        else if (cursorIndex <= this.groups[2].end) this.setSelection(2); // select year
-        else if (cursorIndex <= this.groups[3].end) this.setSelection(3); // select hours
-        else this.setSelection(4); // select minutes
+        if (cursorIndex <= this.groups[0].end) this.setGroup(0); // select day
+        else if (cursorIndex <= this.groups[1].end) this.setGroup(1); // select month
+        else if (cursorIndex <= this.groups[2].end) this.setGroup(2); // select year
+        else if (cursorIndex <= this.groups[3].end) this.setGroup(3); // select hours
+        else this.setGroup(4); // select minutes
     }
 
     public setPrevGroup(): void {
         const prevGroup = this.selectedGroup > 0 ? this.selectedGroup - 1 : 0;
-        this.setSelection(prevGroup);
+        this.setGroup(prevGroup);
     }
 
     public setNextGroup(): void {
         const nextGroup = this.selectedGroup < this.groups.length - 1 ? this.selectedGroup + 1 : this.groups.length - 1;
-        this.setSelection(nextGroup);
+        this.setGroup(nextGroup);
     }
 
     public setFirstGroup(): void {
-        this.setSelection(0);
+        this.setGroup(0);
     }
 
-    public setGroup(): void {
-        this.setSelection(this.selectedGroup);
-    }
-
-    private setSelection(i: number): void {
-        this.dateInputRef.nativeElement.setSelectionRange(this.groups[i].start, this.groups[i].end, "forward");
+    private setGroup(i: number): void {
         this.selectedGroup = i;
+        this.groups[i].touched = false;
+        this.setSelection();
+    }
+
+    public setSelection(): void {
+        this.dateInputRef.nativeElement.setSelectionRange(this.groups[this.selectedGroup].start, this.groups[this.selectedGroup].end);
     }
     //
 
@@ -54,37 +56,52 @@ export class SelectionGroupController {
     }
 
     public insertDigit(digit: string) {
-        if (this.selectedGroup === 0) {
-            this.insertDigitForGroup(digit, 0, 2);
-        }
-        else if (this.selectedGroup === 1) {
-            this.insertDigitForGroup(digit, 1, 2);
-        }
-        else if (this.selectedGroup === 2) {
-            this.insertDigitForGroup(digit, 2, 4);
-        }
-        else if (this.selectedGroup === 3) {
-            this.insertDigitForGroup(digit, 3, 2);
-        }
-        else if (this.selectedGroup === 4) {
-            this.insertDigitForGroup(digit, 4, 2);
-        }
-
-        this.setSelection(this.selectedGroup);
+        this.insertDigitForGroup(digit);
+        this.setSelection();
     }
 
-    private insertDigitForGroup(digit: string, groupIndex: number, groupSize: number) {
-        if (this.groups[groupIndex].value.toString().length === groupSize) {
-            this.groups[groupIndex].value = 0;
+    private insertDigitForGroup(digit: string) {
+        console.log("State: ", this.groups);
+
+        if (!this.groups[this.selectedGroup].touched) {
+            this.groups[this.selectedGroup].touched = true;
+            this.groups[this.selectedGroup].value = 0;
         }
 
-        this.groups[groupIndex].value = this.groups[groupIndex].value * 10 + parseInt(digit);
-
-        if (this.groups[groupIndex].value.toString().length === groupSize && groupIndex < this.groups.length - 1) {
-            this.selectedGroup += 1;
+        if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10 + parseInt(digit))) {
+            this.setNextGroup();
         }
 
-        console.log(digit, groupIndex, groupSize);
+        console.log("value: ", this.groups[this.selectedGroup].value);
+        this.groups[this.selectedGroup].value = this.groups[this.selectedGroup].value * 10 + parseInt(digit);
+        console.log("value: ", this.groups[this.selectedGroup].value);
+
+        if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10)) {
+            this.setNextGroup();
+        }
+    }
+
+    private checkGroupFull(groupIndex: number, newValue: number): boolean {
+        switch (groupIndex) {
+            case 0: {
+                return newValue > 31
+            }
+            case 1: {
+                return newValue > 12
+            }
+            case 2: {
+                return newValue > 9999
+            }
+            case 3: {
+                return newValue > 23
+            }
+            case 4: {
+                return newValue > 59
+            }
+            default: {
+                return true;
+            }
+        }
     }
 
     public getValue() {
@@ -96,6 +113,11 @@ export class SelectionGroupController {
     }
 
     private normalize(value: number, maskSize: number): string {
+        if (maskSize - value.toString().length < 0) {
+            console.log("maskSize: ", maskSize);
+            console.log("value.toString().length: ", value.toString().length);
+            console.log("value.toString(): ", value.toString());
+        }
         return "0".repeat(maskSize - value.toString().length) + value.toString();
     }
 }
