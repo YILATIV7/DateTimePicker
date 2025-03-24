@@ -1,0 +1,85 @@
+<span *ngIf="label" [ngStyle]="labelMinWidth ? {minWidth: labelMinWidth + 'px'} : {}" class="fieldLabel">
+    {{ label }}
+</span>
+
+<div [ngStyle]="fieldControlsWidth ? {width: fieldControlsWidth + 'px'} : {}" class="fieldControls">
+    <div class="fieldData">
+
+        <input #dateInput
+               #trigger="cdkOverlayOrigin"
+               [disabled]="disabled"
+               [placeholder]="placeholder ? (placeholder) : ''"
+               [readonly]="readonly"
+               [required]="required"
+
+               cdkOverlayOrigin
+               class="date-input"
+               (focus)="onFocus()"
+               (blur)="onBlur()"
+               (click)="onClick()"
+               (keydown)="onKeyDown($event)"
+        >
+    </div>
+    <ng-template
+            (backdropClick)="isOpen = false"
+            [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+            [cdkConnectedOverlayFlexibleDimensions]="true"
+            [cdkConnectedOverlayHasBackdrop]="true"
+            [cdkConnectedOverlayOpen]="isOpen"
+            [cdkConnectedOverlayOrigin]="trigger"
+            [cdkConnectedOverlayPush]="true"
+            cdkConnectedOverlay>
+
+        <div class="dateRangePickerWrapper">
+            <div>
+                <mat-calendar [(selected)]="selectedDate"></mat-calendar>
+            </div>
+
+            <div *ngIf="type === 'date-time'" class="timePickers timePickers--border df-c jc-c ai-c">
+                <div class="df" style="gap: 2px">
+
+                    <div class="field">
+                        <div class="dahField dahField--form">
+                            <div class="fieldControls">
+                                <div class="fieldData">
+                                    <ng-select (change)="timeSelected($event, 'hour')"
+                                               [clearable]="false"
+                                               appendTo="body"
+                                               style="flex: 0 0 70px; min-width: 70px">
+<!--                                        <ng-option *ngFor="let hour of hoursArr" [value]="hour">{{ hour }}</ng-option>-->
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="dahField dahField--form">
+                            <div class="fieldControls">
+                                <div class="fieldData">
+                                    <ng-select (change)="timeSelected($event, 'minute')"
+                                               [clearable]="false"
+                                               appendTo="body"
+                                               style="flex: 0 0 70px; min-width: 70px">
+<!--                                        <ng-option *ngFor="let minute of minutesArr" [value]="minute">{{ minute }}</ng-option>-->
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </ng-template>
+
+    <div (click)="isOpen = !isOpen" *ngIf="!disabled && !readonly" class="fieldActions">
+<!--        <button type="button">-->
+<!--            <i class="icon-filter_close"></i>-->
+<!--        </button>-->
+        <button type="button">
+            <i class="{{iconClassName}}"></i>
+        </button>
+    </div>
+</div>
