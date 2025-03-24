@@ -135,7 +135,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         if (/^[0-9]$/i.test(event.key)) {
             this.selectionGroupController.insertDigit(event.key);
         }
-        else if (event.key === 'Delete') {
+        else if (event.key === 'Delete' || event.key === 'Backspace') {
             this.selectionGroupController.clearGroup();
         }
         else if (event.key === 'ArrowLeft') {
@@ -146,7 +146,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         }
 
         this.dateInputRef.nativeElement.value = this.selectionGroupController.getValue();
-        this.selectionGroupController.invalidateSelection();
+        this.selectionGroupController.setGroup();
     }
 
     public onClick(): void {
@@ -161,41 +161,4 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
     public onBlur(): void {
 
     }
-
-    public inputTransformFn = (value: unknown): string => {
-        console.log('value input', value);
-        //const datTime = dayjs(value as string).format('DD.MM.YYYY HH:mm');
-
-        if (value === '2.__.____ __:__') {
-            value = '2__.__.____ __:__';
-        }
-
-        if (value === '22.22.2 __:__') {
-            value = '22.22.2____ __:__';
-        }
-
-        if (value === '22.22.2 22:22') {
-            value = '22.22.2____ 22:22';
-        }
-
-        console.log('transformed value input', value);
-        //ok
-        // 'X__.__.____ __:__'
-        // '0X_.__.____ __:__'
-        // '00X.__.____ __:__'
-        // '00.0X_.____ __:__'
-
-        // bug
-        // 'X.__.____ __:__'
-        // '00.0X.____ __:__'
-
-        return value as string;
-    };
-
-    public outputTransformFn = (value: string | number | null | undefined): string => {
-        //console.log('value output', value);
-
-
-        return value as string;
-    };
 }
