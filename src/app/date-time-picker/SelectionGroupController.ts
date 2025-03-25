@@ -1,6 +1,4 @@
-import {ElementRef} from '@angular/core';
-
-export const GROUPS_COUNT = 5;
+import {EventEmitter} from '@angular/core';
 
 /**
  * Interface describing a selection group (day, month, year, hour, or minute).
@@ -10,46 +8,82 @@ export const GROUPS_COUNT = 5;
  * - `touched` - Indicates whether the group has been modified at least once after `setGroup` was called.
  * - `leadingZero` - Indicates whether the first typed digit was zero after `setGroup` was called.
  */
-export interface SelectionGroup {
+export interface SelectionGroup extends SelectionRange {
     value: number;
-    start: number;
-    end: number;
     touched: boolean;
     leadingZero: boolean;
+}
+
+export interface SelectionRange {
+    start: number;
+    end: number;
+}
+
+export interface SelectionGroupOutputModel {
+    fullValue: string,
+    selectionStart: number,
+    selectionEnd: number
 }
 
 export enum SelectionGroupType {
     DAY = 0,
     MONTH = 1,
     YEAR = 2,
-    HOUR = 3,
-    MINUTE = 4
+    HOURS = 3,
+    MINUTES = 4
 }
 
 export class SelectionGroupController {
-    private dateInputRef: ElementRef<HTMLInputElement>;
 
+    public valueChanges = new EventEmitter<SelectionGroupOutputModel>();
     private selectedGroup: SelectionGroupType = SelectionGroupType.DAY;
+    private type: 'date' | 'date-time' = 'date-time';
 
-    private groups: Record<SelectionGroupType, SelectionGroup> = {
-        0: {value: 0, start: 0, end: 2, touched: false, leadingZero: false},
-        1: {value: 0, start: 3, end: 5, touched: false, leadingZero: false},
-        2: {value: 0, start: 6, end: 10, touched: false, leadingZero: false},
-        3: {value: 0, start: 11, end: 13, touched: false, leadingZero: false},
-        4: {value: 0, start: 14, end: 16, touched: false, leadingZero: false},
-    };
-
-    public setDateInputRef(ref: ElementRef<HTMLInputElement>) {
-        this.dateInputRef = ref;
+    get groupsCount(): number {
+        return this.type === 'date-time' ? 5 : 3;
     }
 
-    /* Setting group */
+    get maxCursorIndex(): number {
+        return this.type === 'date-time' ? 16 : 10;
+    }
+
+    public setType(type: 'date-time' | 'date'): void {
+        this.type = type;
+    }
+
+    public isTimeTouched(): boolean {
+        return this.groups[SelectionGroupType.HOURS].touched || this.groups[SelectionGroupType.MINUTES].touched;
+    }
+
+    // TODO: Vit review: differ state (value, bools...) and constants (start, end)
+    private groups: Record<SelectionGroupType, SelectionGroup> = {
+        [SelectionGroupType.DAY]: {value: 0, start: 0, end: 2, touched: false, leadingZero: false},
+        [SelectionGroupType.MONTH]: {value: 0, start: 3, end: 5, touched: false, leadingZero: false},
+        [SelectionGroupType.YEAR]: {value: 0, start: 6, end: 10, touched: false, leadingZero: false},
+        [SelectionGroupType.HOURS]: {value: 0, start: 11, end: 13, touched: false, leadingZero: false},
+        [SelectionGroupType.MINUTES]: {value: 0, start: 14, end: 16, touched: false, leadingZero: false},
+    };
+
+    private emitValueChanges() {
+        this.valueChanges.emit({
+            fullValue: this.getValue(),
+            selectionStart: this.groups[this.selectedGroup].start,
+            selectionEnd: this.groups[this.selectedGroup].end,
+        });
+    }
+
+    // <editor-fold desc="Setting groups">
     public setGroupForCursor(cursorIndex: number): void {
+        if (cursorIndex >= this.maxCursorIndex) {
+            this.setGroup(this.selectedGroup);
+            return;
+        }
+
         if (cursorIndex <= this.groups[SelectionGroupType.DAY].end) this.setGroup(SelectionGroupType.DAY);
         else if (cursorIndex <= this.groups[SelectionGroupType.MONTH].end) this.setGroup(SelectionGroupType.MONTH);
         else if (cursorIndex <= this.groups[SelectionGroupType.YEAR].end) this.setGroup(SelectionGroupType.YEAR);
-        else if (cursorIndex <= this.groups[SelectionGroupType.HOUR].end) this.setGroup(SelectionGroupType.HOUR);
-        else this.setGroup(SelectionGroupType.MINUTE);
+        else if (cursorIndex <= this.groups[SelectionGroupType.HOURS].end) this.setGroup(SelectionGroupType.HOURS);
+        else this.setGroup(SelectionGroupType.MINUTES);
     }
 
     public setPrevGroup(): void {
@@ -58,37 +92,36 @@ export class SelectionGroupController {
     }
 
     public setNextGroup(): void {
-        const nextGroup = this.selectedGroup < GROUPS_COUNT - 1 ? this.selectedGroup + 1 : GROUPS_COUNT - 1;
+        const nextGroup = this.selectedGroup < this.groupsCount - 1 ? this.selectedGroup + 1 : this.groupsCount - 1;
         this.setGroup(nextGroup);
     }
 
-    public setGroupOnFocus(): void {
-        this.setGroup(this.selectedGroup);
-    }
+    public setGroup(i?: SelectionGroupType): void {
+        if (i !== undefined) {
+            this.selectedGroup = i;
+        }
 
-    private setGroup(i: SelectionGroupType): void {
-        this.selectedGroup = i;
-        this.groups[i].touched = false;
-        this.groups[i].leadingZero = false;
-        this.setSelection();
+        this.groups[this.selectedGroup].touched = false;
+        this.groups[this.selectedGroup].leadingZero = false;
+        this.emitValueChanges();
     }
-
-    public setSelection(): void {
-        this.dateInputRef.nativeElement.setSelectionRange(this.groups[this.selectedGroup].start, this.groups[this.selectedGroup].end);
-    }
-    //
 
     public clearGroup(): void {
         if (this.groups[this.selectedGroup].value === 0) {
             this.setPrevGroup();
         } else {
             this.groups[this.selectedGroup].value = 0;
+            this.groups[this.selectedGroup].touched = false;
+            this.groups[this.selectedGroup].leadingZero = false;
+            this.emitValueChanges();
         }
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Inserting digits">
     public insertDigit(digit: string) {
         this.insertDigitForGroup(digit);
-        this.setSelection();
     }
 
     private insertDigitForGroup(digit: string) {
@@ -112,6 +145,8 @@ export class SelectionGroupController {
         if (this.checkGroupFull(this.selectedGroup, this.groups[this.selectedGroup].value * 10) || this.checkZeroTypedManually()) {
             this.setNextGroup();
         }
+
+        this.emitValueChanges();
     }
 
     private checkGroupFull(groupIndex: number, newValue: number): boolean {
@@ -125,12 +160,59 @@ export class SelectionGroupController {
             && this.selectedGroup !== SelectionGroupType.YEAR;
     }
 
-    public getValue() {
+    // </editor-fold>
+
+    // <editor-fold desc="Setting value">
+    public setDateTime(date: string) {
+        for (let i: SelectionGroupType = 0; i < this.groupsCount; i++) {
+            this.groups[i].value = parseInt(date.substring(this.groups[i].start, this.groups[i].end));
+            this.groups[i].touched = false;
+            this.groups[i].leadingZero = false;
+        }
+
+        this.emitValueChanges();
+    }
+
+    public setDate(dateObj: Date) {
+        const values = [
+            dateObj.getDate(),
+            dateObj.getMonth() + 1,
+            dateObj.getFullYear()
+        ];
+
+        for (let i: SelectionGroupType = 0; i < 3; i++) {
+            this.groups[i].value = values[i];
+            this.groups[i].touched = false;
+            this.groups[i].leadingZero = false;
+        }
+
+        this.emitValueChanges();
+    }
+
+    public setHours(hours: number) {
+        this.groups[SelectionGroupType.HOURS].value = hours;
+        this.groups[SelectionGroupType.HOURS].touched = false;
+        this.groups[SelectionGroupType.HOURS].leadingZero = false;
+        this.emitValueChanges();
+    }
+
+    public setMinutes(minutes: number) {
+        this.groups[SelectionGroupType.MINUTES].value = minutes;
+        this.groups[SelectionGroupType.MINUTES].touched = false;
+        this.groups[SelectionGroupType.MINUTES].leadingZero = false;
+        this.emitValueChanges();
+    }
+
+    // </editor-fold>
+
+    private getValue() {
         return this.addLeadingZeros(this.groups[SelectionGroupType.DAY].value, 2)
             + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.MONTH].value, 2)
             + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.YEAR].value, 4)
-            + ' ' + this.addLeadingZeros(this.groups[SelectionGroupType.HOUR].value, 2)
-            + ':' + this.addLeadingZeros(this.groups[SelectionGroupType.MINUTE].value, 2);
+            + (this.type == 'date-time' ? (
+                ' ' + this.addLeadingZeros(this.groups[SelectionGroupType.HOURS].value, 2)
+                + ':' + this.addLeadingZeros(this.groups[SelectionGroupType.MINUTES].value, 2)
+            ) : '');
     }
 
     private addLeadingZeros(value: number, maskSize: number): string {

@@ -6,7 +6,32 @@
             [fieldControlsWidth]="172"
             [label]="'common.labels.from'"
             [required]="true"
+            [minDate]="'1989-11-25'"
+            [maxDate]="'2026-04-19'"
             [type]="'date-time'"
+            class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
+    </dah-date-time-picker>
+
+    <dah-date-time-picker
+            style="width: 350px"
+            [fieldControlsWidth]="172"
+            [label]="'common.labels.from'"
+            [required]="true"
+            [minDate]="'1989-11-25'"
+            [maxDate]="'2026-04-19'"
+            [type]="'date'"
+            class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
+    </dah-date-time-picker>
+
+    <dah-date-time-picker
+            style="width: 350px"
+            [fieldControlsWidth]="172"
+            [label]="'common.labels.from'"
+            [required]="true"
+            [minDate]="'1989-11-25'"
+            [maxDate]="'2026-04-19'"
+            [type]="'date-time'"
+            [isFilterTo]="true"
             class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
     </dah-date-time-picker>
 </label>

@@ -16,8 +16,7 @@
 
                cdkOverlayOrigin
                class="date-input"
-               (focus)="onFocus()"
-               (blur)="onBlur()"
+               (blur)="validateInput()"
                (click)="onClick()"
                (keydown)="onKeyDown($event)"
         >
@@ -34,7 +33,13 @@
 
         <div class="dateRangePickerWrapper">
             <div>
-                <mat-calendar [(selected)]="selectedDate"></mat-calendar>
+                <mat-calendar #matCalendar
+                              [minDate]="parseDateString(minDate)"
+                              [maxDate]="parseDateString(maxDate)"
+                              [startAt]="selectedDate"
+                              [selected]="selectedDate"
+                              (selectedChange)="selectedDateChanged($event)"
+                ></mat-calendar>
             </div>
 
             <div *ngIf="type === 'date-time'" class="timePickers timePickers--border df-c jc-c ai-c">
@@ -45,10 +50,11 @@
                             <div class="fieldControls">
                                 <div class="fieldData">
                                     <ng-select (change)="timeSelected($event, 'hour')"
+                                               [ngModel]="selectedDate?.getHours()"
                                                [clearable]="false"
                                                appendTo="body"
                                                style="flex: 0 0 70px; min-width: 70px">
-<!--                                        <ng-option *ngFor="let hour of hoursArr" [value]="hour">{{ hour }}</ng-option>-->
+                                        <ng-option *ngFor="let hour of hoursArr" [value]="hour">{{ hour < 10 ? "0" + hour : hour }}</ng-option>
                                     </ng-select>
                                 </div>
                             </div>
@@ -60,10 +66,11 @@
                             <div class="fieldControls">
                                 <div class="fieldData">
                                     <ng-select (change)="timeSelected($event, 'minute')"
+                                               [ngModel]="selectedDate?.getMinutes()"
                                                [clearable]="false"
                                                appendTo="body"
                                                style="flex: 0 0 70px; min-width: 70px">
-<!--                                        <ng-option *ngFor="let minute of minutesArr" [value]="minute">{{ minute }}</ng-option>-->
+                                        <ng-option *ngFor="let minute of minutesArr" [value]="minute">{{ minute < 10 ? "0" + minute : minute }}</ng-option>
                                     </ng-select>
                                 </div>
                             </div>

@@ -1,24 +1,30 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, model, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
-import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatCalendar} from '@angular/material/datepicker';
-import {SelectionGroupController} from './SelectionGroupController';
-import {NgIf, NgStyle} from '@angular/common';
-import {CdkConnectedOverlay, CdkOverlayOrigin} from '@angular/cdk/overlay';
-import {NgSelectComponent} from '@ng-select/ng-select';
+import {SelectionGroupController, SelectionGroupOutputModel} from './SelectionGroupController';
 import dayjs from 'dayjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {NgOptionComponent, NgSelectComponent} from '@ng-select/ng-select';
+import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import {CdkConnectedOverlay, CdkOverlayOrigin} from '@angular/cdk/overlay';
 
 @Component({
     selector: 'dah-date-time-picker',
     imports: [
         NgxDaterangepickerMd,
         MatCalendar,
+        FormsModule,
+        NgSelectComponent,
+        NgOptionComponent,
+        NgForOf,
+        CdkConnectedOverlay,
+        CdkOverlayOrigin,
         NgStyle,
         NgIf,
-        CdkOverlayOrigin,
-        CdkConnectedOverlay,
-        NgSelectComponent,
+        CdkConnectedOverlay
     ],
     standalone: true,
     providers: [
@@ -37,7 +43,7 @@ import dayjs from 'dayjs';
     styleUrl: './date-time-picker.component.scss'
 })
 
-export class DateTimePickerComponent implements ControlValueAccessor, AfterViewInit {
+export class DateTimePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
     /** UI and translation */
     @Input() label: string | undefined;
     @Input() placeholder: string | undefined;
@@ -51,6 +57,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
     @Input() keepCharacterPositions: boolean = true;
     @Input() minDate: string | undefined;
     @Input() maxDate: string | undefined;
+    @Input() isFilterTo: boolean | undefined;
 
     @HostBinding('attr.readonly') @Input() readonly: boolean;
     @HostBinding('attr.readonly') @Input() required: boolean;
@@ -61,24 +68,39 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
     @Output() selected: EventEmitter<void> = new EventEmitter<void>();
 
     @ViewChild('dateInput') dateInputRef: ElementRef<HTMLInputElement>;
+    @ViewChild('matCalendar') matCalendar: MatCalendar<Date | null>;
 
     public isOpen: boolean;
     public mask: string;
 
-    public selectedDate = model<Date | null>(null);
+    public hoursArr: number[];
+    public minutesArr: number[];
+
+    public selectedDate: Date | null;
 
     private selectionGroupController = new SelectionGroupController();
 
+    private destroyed$ = new Subject<void>();
+
     constructor() {
-        if (this.type == 'date-time') {
-            this.mask = 'd0.M0.0000 Hh:m0';
-        }
-        // todo: Vit: implement 'date' mode
+        this.hoursArr = Array.from(Array(24).keys());
+        this.minutesArr = Array.from(Array(60).keys());
     }
 
-    ngAfterViewInit() {
-        this.selectionGroupController.setDateInputRef(this.dateInputRef);
-        this.dateInputRef.nativeElement.value = this.selectionGroupController.getValue();
+    ngOnInit() {
+        this.selectionGroupController.setType(this.type);
+
+        this.selectionGroupController.valueChanges.pipe(
+            takeUntil(this.destroyed$)
+        ).subscribe((value: SelectionGroupOutputModel) => {
+            this.dateInputRef.nativeElement.value = value.fullValue;
+            this.dateInputRef.nativeElement.setSelectionRange(value.selectionStart, value.selectionEnd);
+        });
+    }
+
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.complete();
     }
 
     public _value: string | null;
@@ -112,9 +134,17 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         this.onTouched = fn;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
-    timeSelected(event: any, type: 'hour' | 'minute'): void {
-
+    timeSelected(event: number, type: 'hour' | 'minute'): void {
+        if (this.selectedDate) {
+            if (type == 'hour') {
+                this.selectedDate = dayjs(this.selectedDate).hour(event).toDate();
+                this.selectionGroupController.setHours(event);
+            } else {
+                this.selectedDate = dayjs(this.selectedDate).minute(event).toDate();
+                this.selectionGroupController.setMinutes(event);
+                this.isOpen = false;
+            }
+        }
     }
 
     writeValue(obj: any): void {
@@ -131,24 +161,37 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         return null;
     }
 
+    public selectedDateChanged(date: Date | null | undefined): void {
+        if (date) {
+            if (this.selectedDate) {
+                this.selectedDate = dayjs(date)
+                    .hour(this.selectedDate.getHours())
+                    .minute(this.selectedDate.getMinutes())
+                    .toDate();
+            } else {
+                this.selectedDate = dayjs(date).toDate();
+            }
+
+            this.selectionGroupController.setDate(this.selectedDate);
+            this.matCalendar.activeDate = this.selectedDate;
+        }
+        this.isOpen = false;
+    }
+
     public onKeyDown(event: KeyboardEvent): void {
         event.preventDefault();
 
         if (/^[0-9]$/i.test(event.key)) {
             this.selectionGroupController.insertDigit(event.key);
-        }
-        else if (event.key === 'Delete' || event.key === 'Backspace') {
+        } else if (event.key === 'Delete' || event.key === 'Backspace') {
             this.selectionGroupController.clearGroup();
-        }
-        else if (event.key === 'ArrowLeft') {
+        } else if (event.key === 'ArrowLeft') {
             this.selectionGroupController.setPrevGroup();
-        }
-        else if (event.key === 'ArrowRight') {
+        } else if (event.key === 'ArrowRight') {
             this.selectionGroupController.setNextGroup();
+        } else if (event.key === 'Enter') {
+            this.validateInput();
         }
-
-        this.dateInputRef.nativeElement.value = this.selectionGroupController.getValue();
-        this.selectionGroupController.setSelection();
     }
 
     public onClick(): void {
@@ -156,12 +199,9 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         this.selectionGroupController.setGroupForCursor(cursorIndex);
     }
 
-    public onFocus(): void {
-        this.selectionGroupController.setGroupOnFocus();
-    }
-
-    public onBlur(): void {
-        const value = this.dateInputRef.nativeElement.value
+    public validateInput(): void {
+        // TODO: переа=вірити врахування секунд
+        const value = this.dateInputRef.nativeElement.value;
 
         const day = parseInt(value.substring(0, 2));
         const month = parseInt(value.substring(3, 5));
@@ -169,20 +209,40 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         const hours = parseInt(value.substring(11, 13));
         const minutes = parseInt(value.substring(14, 16));
 
-        console.log(year, month == 0 ? new Date().getMonth() : month - 1, day, hours, minutes);
         const date = new Date(
             year == 0 ? new Date().getFullYear() : year,
             month == 0 ? new Date().getMonth() : month - 1,
-            day == 0 ? new Date().getDate() : day,
-            hours, minutes);
+            day == 0 ? new Date().getDate() : day
+        );
 
-        console.log(new Date().getFullYear());
+        if (this.type === 'date-time') {
+            if (hours === 0 && minutes === 0 && !this.selectionGroupController.isTimeTouched() && this.isFilterTo) {
+                date.setHours(23, 59, 59);
+            } else {
+                date.setHours(hours, minutes, this.isFilterTo ? 59 : 0);
+            }
+        }
 
-        console.log("string value: ", value);
-        console.log("date: ", date);
-        console.log("date value: ", dayjs(date).format('YYYY-MM-DD HH:mm'));
+        const minDate = this.parseDateString(this.minDate);
+        const maxDate = this.parseDateString(this.maxDate);
 
-        this.dateInputRef.nativeElement.value = dayjs(date).format('DD.MM.YYYY HH:mm');
-        // todo: synchronize with SelectionGroupController
+        let resultDate = date;
+        if (maxDate) {
+            maxDate.setHours(23, 59, 59);
+            if (date.getTime() > maxDate.getTime()) {
+                resultDate = maxDate;
+            }
+        }
+        if (minDate && date.getTime() < minDate.getTime()) {
+            resultDate = minDate;
+        }
+
+        this.selectionGroupController.setDateTime(dayjs(resultDate).format('DD.MM.YYYY HH:mm'));
+        this.selectedDate = resultDate;
+    }
+
+    public parseDateString(dateStr: string | undefined): Date | undefined {
+        const result = dayjs(dateStr, 'YYYY-MM-DD');
+        return result.isValid() ? result.toDate() : undefined;
     }
 }
