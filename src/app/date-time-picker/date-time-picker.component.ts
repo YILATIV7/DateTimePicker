@@ -7,6 +7,7 @@ import {SelectionGroupController} from './SelectionGroupController';
 import {NgIf, NgStyle} from '@angular/common';
 import {CdkConnectedOverlay, CdkOverlayOrigin} from '@angular/cdk/overlay';
 import {NgSelectComponent} from '@ng-select/ng-select';
+import dayjs from 'dayjs';
 
 @Component({
     selector: 'dah-date-time-picker',
@@ -160,6 +161,28 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
     }
 
     public onBlur(): void {
+        const value = this.dateInputRef.nativeElement.value
 
+        const day = parseInt(value.substring(0, 2));
+        const month = parseInt(value.substring(3, 5));
+        const year = parseInt(value.substring(6, 10));
+        const hours = parseInt(value.substring(11, 13));
+        const minutes = parseInt(value.substring(14, 16));
+
+        console.log(year, month == 0 ? new Date().getMonth() : month - 1, day, hours, minutes);
+        const date = new Date(
+            year == 0 ? new Date().getFullYear() : year,
+            month == 0 ? new Date().getMonth() : month - 1,
+            day == 0 ? new Date().getDate() : day,
+            hours, minutes);
+
+        console.log(new Date().getFullYear());
+
+        console.log("string value: ", value);
+        console.log("date: ", date);
+        console.log("date value: ", dayjs(date).format('YYYY-MM-DD HH:mm'));
+
+        this.dateInputRef.nativeElement.value = dayjs(date).format('DD.MM.YYYY HH:mm');
+        // todo: synchronize with SelectionGroupController
     }
 }
