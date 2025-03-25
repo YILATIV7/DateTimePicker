@@ -1,17 +1,43 @@
 import {ElementRef} from '@angular/core';
 
+export const GROUPS_COUNT = 5;
+
+/**
+ * Interface describing a selection group (day, month, year, hour, or minute).
+ * - `value` - Numeric value of the group.
+ * - `start` - Start index of the selection.
+ * - `end` - End index of the selection.
+ * - `touched` - Indicates whether the group has been modified at least once after `setGroup` was called.
+ * - `leadingZero` - Indicates whether the first typed digit was zero after `setGroup` was called.
+ */
+export interface SelectionGroup {
+    value: number;
+    start: number;
+    end: number;
+    touched: boolean;
+    leadingZero: boolean;
+}
+
+export enum SelectionGroupType {
+    DAY = 0,
+    MONTH = 1,
+    YEAR = 2,
+    HOUR = 3,
+    MINUTE = 4
+}
+
 export class SelectionGroupController {
     private dateInputRef: ElementRef<HTMLInputElement>;
 
-    private selectedGroup: number = 0;
+    private selectedGroup: SelectionGroupType = SelectionGroupType.DAY;
 
-    private groups = [
-        {value: 0, start: 0, end: 2, touched: false, leadingZero: false}, // day
-        {value: 0, start: 3, end: 5, touched: false, leadingZero: false}, // month
-        {value: 0, start: 6, end: 10, touched: false, leadingZero: false}, // year
-        {value: 0, start: 11, end: 13, touched: false, leadingZero: false}, // hours
-        {value: 0, start: 14, end: 16, touched: false, leadingZero: false}, // minutes
-    ];
+    private groups: Record<SelectionGroupType, SelectionGroup> = {
+        0: {value: 0, start: 0, end: 2, touched: false, leadingZero: false},
+        1: {value: 0, start: 3, end: 5, touched: false, leadingZero: false},
+        2: {value: 0, start: 6, end: 10, touched: false, leadingZero: false},
+        3: {value: 0, start: 11, end: 13, touched: false, leadingZero: false},
+        4: {value: 0, start: 14, end: 16, touched: false, leadingZero: false},
+    };
 
     public setDateInputRef(ref: ElementRef<HTMLInputElement>) {
         this.dateInputRef = ref;
@@ -19,11 +45,11 @@ export class SelectionGroupController {
 
     /* Setting group */
     public setGroupForCursor(cursorIndex: number): void {
-        if (cursorIndex <= this.groups[0].end) this.setGroup(0); // select day
-        else if (cursorIndex <= this.groups[1].end) this.setGroup(1); // select month
-        else if (cursorIndex <= this.groups[2].end) this.setGroup(2); // select year
-        else if (cursorIndex <= this.groups[3].end) this.setGroup(3); // select hours
-        else this.setGroup(4); // select minutes
+        if (cursorIndex <= this.groups[SelectionGroupType.DAY].end) this.setGroup(SelectionGroupType.DAY);
+        else if (cursorIndex <= this.groups[SelectionGroupType.MONTH].end) this.setGroup(SelectionGroupType.MONTH);
+        else if (cursorIndex <= this.groups[SelectionGroupType.YEAR].end) this.setGroup(SelectionGroupType.YEAR);
+        else if (cursorIndex <= this.groups[SelectionGroupType.HOUR].end) this.setGroup(SelectionGroupType.HOUR);
+        else this.setGroup(SelectionGroupType.MINUTE);
     }
 
     public setPrevGroup(): void {
@@ -32,7 +58,7 @@ export class SelectionGroupController {
     }
 
     public setNextGroup(): void {
-        const nextGroup = this.selectedGroup < this.groups.length - 1 ? this.selectedGroup + 1 : this.groups.length - 1;
+        const nextGroup = this.selectedGroup < GROUPS_COUNT - 1 ? this.selectedGroup + 1 : GROUPS_COUNT - 1;
         this.setGroup(nextGroup);
     }
 
@@ -40,7 +66,7 @@ export class SelectionGroupController {
         this.setGroup(this.selectedGroup);
     }
 
-    private setGroup(i: number): void {
+    private setGroup(i: SelectionGroupType): void {
         this.selectedGroup = i;
         this.groups[i].touched = false;
         this.groups[i].leadingZero = false;
@@ -96,18 +122,18 @@ export class SelectionGroupController {
     private checkZeroTypedManually(): boolean {
         return this.groups[this.selectedGroup].leadingZero
             && this.groups[this.selectedGroup].value !== 0
-            && this.selectedGroup !== 3;
+            && this.selectedGroup !== SelectionGroupType.YEAR;
     }
 
     public getValue() {
-        return this.normalize(this.groups[0].value, 2)
-            + '.' + this.normalize(this.groups[1].value, 2)
-            + '.' + this.normalize(this.groups[2].value, 4)
-            + ' ' + this.normalize(this.groups[3].value, 2)
-            + ':' + this.normalize(this.groups[4].value, 2);
+        return this.addLeadingZeros(this.groups[SelectionGroupType.DAY].value, 2)
+            + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.MONTH].value, 2)
+            + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.YEAR].value, 4)
+            + ' ' + this.addLeadingZeros(this.groups[SelectionGroupType.HOUR].value, 2)
+            + ':' + this.addLeadingZeros(this.groups[SelectionGroupType.MINUTE].value, 2);
     }
 
-    private normalize(value: number, maskSize: number): string {
+    private addLeadingZeros(value: number, maskSize: number): string {
         return "0".repeat(maskSize - value.toString().length) + value.toString();
     }
 }

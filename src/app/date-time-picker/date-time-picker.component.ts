@@ -72,6 +72,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, AfterViewI
         if (this.type == 'date-time') {
             this.mask = 'd0.M0.0000 Hh:m0';
         }
+        // todo: Vit: implement 'date' mode
     }
 
     ngAfterViewInit() {
