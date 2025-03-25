@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
@@ -53,11 +53,16 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
 
     /** Control setup */
     @Input() type: 'date-time' | 'date' = 'date-time';
-    @Input() showMaskTyped: boolean = true;
-    @Input() keepCharacterPositions: boolean = true;
-    @Input() minDate: string | undefined;
-    @Input() maxDate: string | undefined;
-    @Input() isFilterTo: boolean | undefined;
+    @Input() minDate: string | undefined = '1900-01-01';
+    @Input() maxDate: string | undefined = '2100-12-31';
+
+    /**
+     * Defines the context for input usage and autocompletion behavior for time.
+     * - `undefined`: Uses the current time (hh:mm:ss).
+     * - `from`: Starts from 00:00:00.
+     * - `to`: Ends at 23:59:59.
+     */
+    @Input() startTime: 'from' | 'to' | undefined;
 
     @HostBinding('attr.readonly') @Input() readonly: boolean;
     @HostBinding('attr.readonly') @Input() required: boolean;
@@ -71,15 +76,10 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     @ViewChild('matCalendar') matCalendar: MatCalendar<Date | null>;
 
     public isOpen: boolean;
-    public mask: string;
-
     public hoursArr: number[];
     public minutesArr: number[];
-
     public selectedDate: Date | null;
-
     private selectionGroupController = new SelectionGroupController();
-
     private destroyed$ = new Subject<void>();
 
     constructor() {
@@ -200,27 +200,29 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     }
 
     public validateInput(): void {
-        // TODO: переа=вірити врахування секунд
-        const value = this.dateInputRef.nativeElement.value;
-
-        const day = parseInt(value.substring(0, 2));
-        const month = parseInt(value.substring(3, 5));
-        const year = parseInt(value.substring(6, 10));
-        const hours = parseInt(value.substring(11, 13));
-        const minutes = parseInt(value.substring(14, 16));
+        const {day, month, year, hours, minutes} = this.selectionGroupController.getRawValue();
+        const current: Date = new Date();
 
         const date = new Date(
-            year == 0 ? new Date().getFullYear() : year,
-            month == 0 ? new Date().getMonth() : month - 1,
-            day == 0 ? new Date().getDate() : day
+            year == 0 ? current.getFullYear() : year,
+            month == 0 ? current.getMonth() : month - 1,
+            day == 0 ? current.getDate() : day
         );
 
         if (this.type === 'date-time') {
-            if (hours === 0 && minutes === 0 && !this.selectionGroupController.isTimeTouched() && this.isFilterTo) {
-                date.setHours(23, 59, 59);
+            if (hours === 0 && minutes === 0 && !this.selectionGroupController.isTimeTouched()) {
+                if (this.startTime == 'from') {
+                    date.setHours(0, 0);
+                } else if (this.startTime == 'to') {
+                    date.setHours(23, 59);
+                } else {
+                    date.setHours(current.getHours(), current.getMinutes());
+                }
             } else {
-                date.setHours(hours, minutes, this.isFilterTo ? 59 : 0);
+                date.setHours(hours, minutes);
             }
+
+            date.setSeconds(this.startTime == 'to' ? 59 : 0);
         }
 
         const minDate = this.parseDateString(this.minDate);
@@ -237,7 +239,9 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
             resultDate = minDate;
         }
 
-        this.selectionGroupController.setDateTime(dayjs(resultDate).format('DD.MM.YYYY HH:mm'));
+        this.selectionGroupController.setDate(resultDate);
+        this.selectionGroupController.setHours(resultDate.getHours());
+        this.selectionGroupController.setMinutes(resultDate.getMinutes());
         this.selectedDate = resultDate;
     }
 

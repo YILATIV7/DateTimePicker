@@ -39,14 +39,6 @@ export class SelectionGroupController {
     private selectedGroup: SelectionGroupType = SelectionGroupType.DAY;
     private type: 'date' | 'date-time' = 'date-time';
 
-    get groupsCount(): number {
-        return this.type === 'date-time' ? 5 : 3;
-    }
-
-    get maxCursorIndex(): number {
-        return this.type === 'date-time' ? 16 : 10;
-    }
-
     public setType(type: 'date-time' | 'date'): void {
         this.type = type;
     }
@@ -55,7 +47,6 @@ export class SelectionGroupController {
         return this.groups[SelectionGroupType.HOURS].touched || this.groups[SelectionGroupType.MINUTES].touched;
     }
 
-    // TODO: Vit review: differ state (value, bools...) and constants (start, end)
     private groups: Record<SelectionGroupType, SelectionGroup> = {
         [SelectionGroupType.DAY]: {value: 0, start: 0, end: 2, touched: false, leadingZero: false},
         [SelectionGroupType.MONTH]: {value: 0, start: 3, end: 5, touched: false, leadingZero: false},
@@ -66,7 +57,7 @@ export class SelectionGroupController {
 
     private emitValueChanges() {
         this.valueChanges.emit({
-            fullValue: this.getValue(),
+            fullValue: this.getStringValue(),
             selectionStart: this.groups[this.selectedGroup].start,
             selectionEnd: this.groups[this.selectedGroup].end,
         });
@@ -74,11 +65,6 @@ export class SelectionGroupController {
 
     // <editor-fold desc="Setting groups">
     public setGroupForCursor(cursorIndex: number): void {
-        if (cursorIndex >= this.maxCursorIndex) {
-            this.setGroup(this.selectedGroup);
-            return;
-        }
-
         if (cursorIndex <= this.groups[SelectionGroupType.DAY].end) this.setGroup(SelectionGroupType.DAY);
         else if (cursorIndex <= this.groups[SelectionGroupType.MONTH].end) this.setGroup(SelectionGroupType.MONTH);
         else if (cursorIndex <= this.groups[SelectionGroupType.YEAR].end) this.setGroup(SelectionGroupType.YEAR);
@@ -92,7 +78,8 @@ export class SelectionGroupController {
     }
 
     public setNextGroup(): void {
-        const nextGroup = this.selectedGroup < this.groupsCount - 1 ? this.selectedGroup + 1 : this.groupsCount - 1;
+        const groupsCount = this.type === 'date-time' ? 5 : 3;
+        const nextGroup = this.selectedGroup < groupsCount - 1 ? this.selectedGroup + 1 : groupsCount - 1;
         this.setGroup(nextGroup);
     }
 
@@ -163,21 +150,14 @@ export class SelectionGroupController {
     // </editor-fold>
 
     // <editor-fold desc="Setting value">
-    public setDateTime(date: string) {
-        for (let i: SelectionGroupType = 0; i < this.groupsCount; i++) {
-            this.groups[i].value = parseInt(date.substring(this.groups[i].start, this.groups[i].end));
-            this.groups[i].touched = false;
-            this.groups[i].leadingZero = false;
-        }
-
-        this.emitValueChanges();
-    }
-
-    public setDate(dateObj: Date) {
+    /**
+     * Receives day, month and year from the Date object
+     */
+    public setDate(date: Date) {
         const values = [
-            dateObj.getDate(),
-            dateObj.getMonth() + 1,
-            dateObj.getFullYear()
+            date.getDate(),
+            date.getMonth() + 1,
+            date.getFullYear()
         ];
 
         for (let i: SelectionGroupType = 0; i < 3; i++) {
@@ -189,6 +169,9 @@ export class SelectionGroupController {
         this.emitValueChanges();
     }
 
+    /**
+     * Receives hours
+     */
     public setHours(hours: number) {
         this.groups[SelectionGroupType.HOURS].value = hours;
         this.groups[SelectionGroupType.HOURS].touched = false;
@@ -196,6 +179,9 @@ export class SelectionGroupController {
         this.emitValueChanges();
     }
 
+    /**
+     * Receives minutes
+     */
     public setMinutes(minutes: number) {
         this.groups[SelectionGroupType.MINUTES].value = minutes;
         this.groups[SelectionGroupType.MINUTES].touched = false;
@@ -205,7 +191,17 @@ export class SelectionGroupController {
 
     // </editor-fold>
 
-    private getValue() {
+    public getRawValue(): Record<string, number> {
+        return {
+            day: this.groups[SelectionGroupType.DAY].value,
+            month: this.groups[SelectionGroupType.MONTH].value,
+            year: this.groups[SelectionGroupType.YEAR].value,
+            hours: this.groups[SelectionGroupType.HOURS].value,
+            minutes: this.groups[SelectionGroupType.MINUTES].value,
+        };
+    }
+
+    private getStringValue() {
         return this.addLeadingZeros(this.groups[SelectionGroupType.DAY].value, 2)
             + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.MONTH].value, 2)
             + '.' + this.addLeadingZeros(this.groups[SelectionGroupType.YEAR].value, 4)

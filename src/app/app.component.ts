@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'DateTimePicker';
+  type: 'date-time' | 'date' = 'date-time';
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.type = 'date';
+    }, 2000)
+  }
 }
