@@ -6,7 +6,8 @@
             [fieldControlsWidth]="172"
             [label]="'common.labels.from'"
             [required]="true"
-            [type]="type"
+            [type]="'date-time'"
+            [formControl]="formControl"
             class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
     </dah-date-time-picker>
 
@@ -17,6 +18,7 @@
             [required]="true"
             [startTime]="'from'"
             [type]="'date'"
+            [formControl]="formControlFrom"
             class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
     </dah-date-time-picker>
 
@@ -27,6 +29,7 @@
             [required]="true"
             [type]="'date-time'"
             [startTime]="'to'"
+            [formControl]="formControlTo"
             class="dahField dahField--horizontal dahField--filled dahField--form dahField--documents">
     </dah-date-time-picker>
 </label>

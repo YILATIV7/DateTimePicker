@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
@@ -44,6 +44,7 @@ import {CdkConnectedOverlay, CdkOverlayOrigin} from '@angular/cdk/overlay';
 })
 
 export class DateTimePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
+
     /** UI and translation */
     @Input() label: string | undefined;
     @Input() placeholder: string | undefined;
@@ -72,13 +73,14 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
 
     @Output() selected: EventEmitter<void> = new EventEmitter<void>();
 
-    @ViewChild('dateInput') dateInputRef: ElementRef<HTMLInputElement>;
+    @ViewChild('dateInput') dateInputRef: ElementRef<HTMLInputElement> | undefined;
     @ViewChild('matCalendar') matCalendar: MatCalendar<Date | null>;
 
     public isOpen: boolean;
     public hoursArr: number[];
     public minutesArr: number[];
-    public selectedDate: Date | null;
+    public inputValue: string;
+    private format: string;
     private selectionGroupController = new SelectionGroupController();
     private destroyed$ = new Subject<void>();
 
@@ -89,12 +91,18 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
 
     ngOnInit() {
         this.selectionGroupController.setType(this.type);
+        this.format = this.type === 'date-time' ? 'YYYY-MM-DD\THH:mm' : (this.type == 'date' ? 'YYYY-MM-DD' : 'HH:mm');
 
         this.selectionGroupController.valueChanges.pipe(
             takeUntil(this.destroyed$)
         ).subscribe((value: SelectionGroupOutputModel) => {
-            this.dateInputRef.nativeElement.value = value.fullValue;
-            this.dateInputRef.nativeElement.setSelectionRange(value.selectionStart, value.selectionEnd);
+            this.inputValue = value.fullValue;
+
+            setTimeout(() => {
+                if (this.dateInputRef?.nativeElement) {
+                    this.dateInputRef?.nativeElement.setSelectionRange(value.selectionStart, value.selectionEnd);
+                }
+            })
         });
     }
 
@@ -103,28 +111,25 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
         this.destroyed$.complete();
     }
 
-    public _value: string | null;
-
-    get value(): string | null {
-        return this._value;
+    private _selectedDate: Date | null;
+    get selectedDate(): Date | null {
+        return this._selectedDate;
     }
 
-    set value(value: string | null) {
-        this._value = value;
+    set selectedDate(value: Date | null) {
+        if (this._selectedDate?.getTime() !== value?.getTime()) {
+            this._selectedDate = value;
+            console.log(this.onChange);
 
-        if (this.onChange) {
-            this.onChange(this._value);
+            if (this.onChange) {
+                this.onChange(dayjs(this._selectedDate).format(this.format));
+                console.log("On change: ", dayjs(this._selectedDate).format(this.format));
+            }
         }
     }
 
-    onTouched: any = () => {
-        // do nothing
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onChange = (_value: string | null) => {
-        // do nothing
-    };
+    onTouched: () => void;
+    onChange: (value: string | null) => void;
 
     registerOnChange(fn: any): void {
         this.onChange = fn;
@@ -132,6 +137,27 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
 
     registerOnTouched(fn: any): void {
         this.onTouched = fn;
+    }
+
+    writeValue(obj: string): void {
+        if (dayjs(obj, this.format).isValid()) {
+            this.selectedDate = dayjs(obj, this.format).toDate();
+            this.selectionGroupController.setDate(this.selectedDate);
+            this.selectionGroupController.setHours(this.selectedDate.getHours());
+            this.selectionGroupController.setMinutes(this.selectedDate.getMinutes());
+
+            console.log("Write value: ", this.selectedDate);
+        }
+    }
+
+    validate(control: AbstractControl): ValidationErrors | null {
+        if (!control.value && this.required) {
+            return {
+                required: true
+            };
+        }
+
+        return null;
     }
 
     timeSelected(event: number, type: 'hour' | 'minute'): void {
@@ -145,20 +171,6 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
                 this.isOpen = false;
             }
         }
-    }
-
-    writeValue(obj: any): void {
-        this.value = obj;
-    }
-
-    validate(control: AbstractControl): ValidationErrors | null {
-        if (!control.value && this.required) {
-            return {
-                required: true
-            };
-        }
-
-        return null;
     }
 
     public selectedDateChanged(date: Date | null | undefined): void {
@@ -195,7 +207,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     }
 
     public onClick(): void {
-        const cursorIndex = this.dateInputRef.nativeElement.selectionEnd as number;
+        const cursorIndex = this.dateInputRef?.nativeElement.selectionEnd as number;
         this.selectionGroupController.setGroupForCursor(cursorIndex);
     }
 
