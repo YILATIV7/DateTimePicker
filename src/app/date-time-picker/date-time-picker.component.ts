@@ -88,13 +88,13 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     ngAfterViewInit() {
         switch (this.type) {
             case 'date-time':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'DD.MM.YYYY HH:mm');
+                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'date-time');
                 break;
             case 'date':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'DD.MM.YYYY');
+                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'date');
                 break;
             case 'time':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'HH:mm');
+                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'time');
                 break;
         }
     }

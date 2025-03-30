@@ -1,36 +1,31 @@
 
 export class DateTimePickerController {
 
-    //private template = "__.__.____ __:__";
     private numberPositions: number[];
     private separatorPositions: number[];
     private value: string = '';
 
     constructor(
         private element: HTMLInputElement,
-        private mask: string
+        private type: 'date-time' | 'date' | 'time'
     ) {
-        this.parseMask();
-        this.element.value = this.value;
-        console.log(this.value);
-    }
+        if (this.type === 'date-time') {
+            this.numberPositions = [0, 1, 3, 4, 6, 7, 8, 9, 11, 12, 14, 15];
+            this.separatorPositions = [2, 5, 10, 13];
+            this.value = '  .  .       :  ';
 
-    private parseMask(): void {
-        let numberPositions = [];
-        let separatorPositions = [];
+        } else if (this.type === 'date') {
+            this.numberPositions = [0, 1, 3, 4, 6, 7, 8, 9];
+            this.separatorPositions = [2, 5];
+            this.value = '  .  .    ';
 
-        for (let i = 0; i < this.mask.length; i++) {
-            if (/^[MDYHms]$/.test(this.mask[i])) {
-                numberPositions.push(i);
-                this.value += ' ';
-            } else {
-                separatorPositions.push(i);
-                this.value += this.mask[i];
-            }
+        } else {
+            this.numberPositions = [0, 1, 3, 4];
+            this.separatorPositions = [2];
+            this.value = '  :  ';
         }
 
-        this.numberPositions = numberPositions;
-        this.separatorPositions = separatorPositions;
+        this.element.value = this.value;
     }
 
     public onFocus() {
@@ -71,14 +66,53 @@ export class DateTimePickerController {
             let inputData = event.data?.replace(/\D/g, "");
             if (!inputData || cursorPosition === this.value.length) return;
 
-            let pos = this.separatorPositions.includes(cursorPosition) ? cursorPosition + 1 : cursorPosition;
-            value[pos] = inputData[0];
-            cursorPosition = pos + 1;
+            /* Base logic */
+            // let pos = this.separatorPositions.includes(cursorPosition) ? cursorPosition + 1 : cursorPosition;
+            // value[pos] = inputData[0];
+            // cursorPosition = pos + 1;
 
+            /* Date logic */
+            if (this.separatorPositions.includes(cursorPosition)) cursorPosition += 1;
 
+            const digit = parseInt(inputData[0])
+
+            if (this.type.includes('date')) {
+
+                if ((cursorPosition === 0 && digit > 3) || (cursorPosition === 3 && digit > 1)) {
+                    value[cursorPosition] = '0';
+                    value[cursorPosition + 1] = digit+'';
+                    cursorPosition += 3;
+                }
+                else if (cursorPosition === 1 && value[0] === '3' && digit > 1) {
+                    value[0] = '0';
+                    value[1] = '3';
+                    value[3] = '0';
+                    value[4] = digit+'';
+                    cursorPosition = 6;
+                }
+                else if (cursorPosition === 4 && value[3] === '1' && digit > 2) {
+                    value[4] = '2';
+                    cursorPosition = 6;
+                }
+                else {
+                    value[cursorPosition] = digit+'';
+                    cursorPosition += 1;
+                    if (this.separatorPositions.includes(cursorPosition)) cursorPosition += 1;
+                }
+            }
+
+            /* Hours and minutes logic */
+            if (this.type.includes('time')) {
+                let timePosition = this.type === 'date-time' ? 11 : 0;
+
+            }
         }
 
         else if (event.inputType === "insertFromPaste") {
+            // TODO:
+        }
+
+        else if (event.inputType === 'deleteByCut') {
             // TODO:
         }
 
