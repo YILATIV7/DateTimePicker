@@ -1,6 +1,4 @@
 export class DateTimePickerController {
-
-    private numberPositions: number[];
     private separatorPositions: number[];
     private value: string = '';
 
@@ -9,34 +7,19 @@ export class DateTimePickerController {
         private type: 'date-time' | 'date' | 'time'
     ) {
         if (this.type === 'date-time') {
-            this.numberPositions = [0, 1, 3, 4, 6, 7, 8, 9, 11, 12, 14, 15];
             this.separatorPositions = [2, 5, 10, 13];
             this.value = '  .  .       :  ';
 
         } else if (this.type === 'date') {
-            this.numberPositions = [0, 1, 3, 4, 6, 7, 8, 9];
             this.separatorPositions = [2, 5];
             this.value = '  .  .    ';
 
         } else {
-            this.numberPositions = [0, 1, 3, 4];
             this.separatorPositions = [2];
             this.value = '  :  ';
         }
 
         this.element.value = this.value;
-    }
-
-    public onFocus() {
-
-    }
-
-    public onBlur() {
-
-    }
-
-    public onKeyDown(event: KeyboardEvent) {
-
     }
 
     public onBeforeInput(event: InputEvent) {
@@ -45,8 +28,6 @@ export class DateTimePickerController {
         let cursorStart = this.element.selectionStart!;
         let cursorEnd = this.element.selectionEnd!;
         let value = this.element.value.split('');
-
-        console.log(event.inputType);
 
         if (event.inputType === "deleteContentBackward") {
             if (cursorStart !== cursorEnd) {
@@ -115,14 +96,6 @@ export class DateTimePickerController {
         this.value = value.join('');
         this.element.value = this.value;
         this.element.setSelectionRange(cursorStart, cursorStart);
-    }
-
-    public onInput(event: Event) {
-        console.log("onInput")
-    }
-
-    public onClick(event: MouseEvent) {
-
     }
 
     private clearPositions(value: string[], start: number, end: number): string[] {

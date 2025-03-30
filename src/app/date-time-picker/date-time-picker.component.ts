@@ -72,7 +72,6 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     public isOpen: boolean;
     public hoursArr: number[];
     public minutesArr: number[];
-    public inputValue: string;
     private destroyed$ = new Subject<void>();
     private controller: DateTimePickerController;
 
@@ -86,17 +85,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
     }
 
     ngAfterViewInit() {
-        switch (this.type) {
-            case 'date-time':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'date-time');
-                break;
-            case 'date':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'date');
-                break;
-            case 'time':
-                this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, 'time');
-                break;
-        }
+        this.controller = new DateTimePickerController(this.dateInputRef!.nativeElement, this.type);
     }
 
     ngOnDestroy() {
@@ -129,27 +118,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, On
         return null;
     }
 
-    onFocus() {
-        this.controller.onFocus();
-    }
-
-    onBlur() {
-        this.controller.onBlur();
-    }
-
-    onKeyDown(event: KeyboardEvent) {
-        this.controller.onKeyDown(event);
-    }
-
     onBeforeInput(event: InputEvent) {
         this.controller.onBeforeInput(event);
-    }
-
-    onClick(event: MouseEvent) {
-        this.controller.onClick(event);
-    }
-
-    onInput(event: Event) {
-        this.controller.onInput(event);
     }
 }
