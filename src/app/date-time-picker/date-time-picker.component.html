@@ -13,13 +13,18 @@
                [placeholder]="placeholder ? (placeholder) : ''"
                [readonly]="readonly"
                [required]="required"
-               [ngModel]="inputValue"
+
+               style="font-family: monospace; cursor: text"
+               autocomplete="false"
 
                cdkOverlayOrigin
                class="date-input"
-               (blur)="validateInput()"
-               (click)="onClick()"
+               (focus)="onFocus()"
+               (blur)="onBlur()"
                (keydown)="onKeyDown($event)"
+               (beforeinput)="onBeforeInput($event)"
+               (input)="onInput($event)"
+               (click)="onClick($event)"
         >
     </div>
     <ng-template
@@ -34,13 +39,13 @@
 
         <div class="dateRangePickerWrapper">
             <div>
-                <mat-calendar #matCalendar
-                              [minDate]="parseDateString(minDate)"
-                              [maxDate]="parseDateString(maxDate)"
-                              [startAt]="selectedDate"
-                              [selected]="selectedDate"
-                              (selectedChange)="selectedDateChanged($event)"
-                ></mat-calendar>
+<!--                <mat-calendar #matCalendar-->
+<!--                              [minDate]="parseDateString(minDate)"-->
+<!--                              [maxDate]="parseDateString(maxDate)"-->
+<!--                              [startAt]="selectedDate"-->
+<!--                              [selected]="selectedDate"-->
+<!--                              (selectedChange)="selectedDateChanged($event)"-->
+<!--                ></mat-calendar>-->
             </div>
 
             <div *ngIf="type === 'date-time'" class="timePickers timePickers--border df-c jc-c ai-c">
@@ -50,13 +55,13 @@
                         <div class="dahField dahField--form">
                             <div class="fieldControls">
                                 <div class="fieldData">
-                                    <ng-select (change)="timeSelected($event, 'hour')"
-                                               [ngModel]="selectedDate?.getHours()"
-                                               [clearable]="false"
-                                               appendTo="body"
-                                               style="flex: 0 0 70px; min-width: 70px">
-                                        <ng-option *ngFor="let hour of hoursArr" [value]="hour">{{ hour < 10 ? "0" + hour : hour }}</ng-option>
-                                    </ng-select>
+<!--                                    <ng-select (change)="timeSelected($event, 'hour')"-->
+<!--                                               [ngModel]="selectedDate?.getHours()"-->
+<!--                                               [clearable]="false"-->
+<!--                                               appendTo="body"-->
+<!--                                               style="flex: 0 0 70px; min-width: 70px">-->
+<!--                                        <ng-option *ngFor="let hour of hoursArr" [value]="hour">{{ hour < 10 ? "0" + hour : hour }}</ng-option>-->
+<!--                                    </ng-select>-->
                                 </div>
                             </div>
                         </div>
@@ -66,13 +71,13 @@
                         <div class="dahField dahField--form">
                             <div class="fieldControls">
                                 <div class="fieldData">
-                                    <ng-select (change)="timeSelected($event, 'minute')"
-                                               [ngModel]="selectedDate?.getMinutes()"
-                                               [clearable]="false"
-                                               appendTo="body"
-                                               style="flex: 0 0 70px; min-width: 70px">
-                                        <ng-option *ngFor="let minute of minutesArr" [value]="minute">{{ minute < 10 ? "0" + minute : minute }}</ng-option>
-                                    </ng-select>
+<!--                                    <ng-select (change)="timeSelected($event, 'minute')"-->
+<!--                                               [ngModel]="selectedDate?.getMinutes()"-->
+<!--                                               [clearable]="false"-->
+<!--                                               appendTo="body"-->
+<!--                                               style="flex: 0 0 70px; min-width: 70px">-->
+<!--                                        <ng-option *ngFor="let minute of minutesArr" [value]="minute">{{ minute < 10 ? "0" + minute : minute }}</ng-option>-->
+<!--                                    </ng-select>-->
                                 </div>
                             </div>
                         </div>
