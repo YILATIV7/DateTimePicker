@@ -87,10 +87,25 @@ export class DateTimePickerController {
             }
 
         } else if (event.inputType === "insertFromPaste") {
-            // TODO:
+            const inputData = event.data?.replace(/\D/g, "");
+            if (!inputData) return;
+
+            let index = cursorStart;
+            let resultCursorPosition = cursorStart;
+            console.log("Cursor start: ", cursorStart);
+
+            for (let i = 0; i < inputData.length; i++) {
+                if (this.separatorPositions.includes(index)) index += 1;
+                if (index >= value.length) break;
+                if (cursorEnd - cursorStart > 0 && index >= cursorEnd) break;
+                value[index] = inputData[i];
+                index += 1;
+                resultCursorPosition = index;
+            }
+
+            cursorStart = cursorStart === cursorEnd ? resultCursorPosition : cursorEnd;
 
         } else if (event.inputType === 'deleteByCut') {
-            // TODO:
             for (let i = cursorStart; i < cursorEnd; i++) {
                 if (this.separatorPositions.includes(i)) continue;
                 value[i] = ' ';
